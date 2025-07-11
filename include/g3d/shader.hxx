@@ -1,8 +1,45 @@
+#pragma once
+
 struct Shader {
 	unsigned int ptr;
-	inline Shader compile();
+	Shader* next;
+
+	inline Shader* compile() {
+        	glCompileShader(ptr);
+        	return this;
+	}
+
+	inline Shader* del() {
+	        glDeleteShader(ptr);
+	        return this;
+	}
+};
+
+namespace Shaders {
+
+
+inline Shader *first, *last;
+
+inline Shader* create(const GLchar* const* code, GLenum shaderType) {
+        Shader *ret = new Shader();
+	if(first == nullptr) first = last = ret;
+	else {
+		last->next = ret;
+		last = ret;
+	}
+
+        ret->ptr = glCreateShader(shaderType);
+        glShaderSource(ret->ptr, 1, code, NULL);
+        return ret;
 }
 
-namespace Shader {
-	inline Shader create(char* code, GLenum shaderType);
+inline void freeAll() {
+	Shader *cur=first, *ref;
+	while(cur != nullptr) {
+		ref = cur;
+		cur = ref->next;
+		delete ref;
+	};
+}
+
 }
