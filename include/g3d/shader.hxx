@@ -38,6 +38,7 @@ inline void freeAll() {
 	while(cur != nullptr) {
 		ref = cur;
 		cur = ref->next;
+		ref->del(); // Delete opengl object
 		delete ref;
 	};
 }
