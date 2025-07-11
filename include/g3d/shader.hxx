@@ -4,5 +4,5 @@ struct Shader {
 }
 
 namespace Shader {
-	inline Shader create(char* code);
+	inline Shader create(char* code, GLenum shaderType);
 }
