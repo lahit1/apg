@@ -1,0 +1,3 @@
+srcs=$(find . -type f -name "*.c*")
+
+g++ -o ./bin/program -I./include $srcs
