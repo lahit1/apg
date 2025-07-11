@@ -1,3 +1,5 @@
-srcs=$(find . -type f -name "*.c*")
+srcs=$(find ./src ./glad/src -type f -name "*.c*")
 
-g++ -o ./bin/program -I./include $srcs
+flags=(-lglfw -lGl -ldl)
+
+g++ -o ./bin/program -I./include -I./glad/include $flags $srcs -std=c++17
