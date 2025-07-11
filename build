@@ -1,5 +1,14 @@
+mkdir -p ./bin
+
 srcs=$(find ./src ./glad/src -type f -name "*.c*")
 
-flags=(-lglfw -lGl -ldl)
+flags=(-lglfw -lGL -ldl -glm)
 
-g++ -o ./bin/program -I./include -I./glad/include $flags $srcs -std=c++17
+g++ -g -o ./bin/program -I./include -I./glad/include $flags $srcs -std=c++17
+
+if [ $? -eq 0 ]; then
+    echo "Compilation success: ./bin/program"
+else
+    echo "Compilation failed!"
+    exit 1
+fi
