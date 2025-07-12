@@ -25,7 +25,25 @@ Model* createCube(int w, int h, int d) {
 	        -0.5f, -0.5f, -0.5f, // B L
     	};
 
-	int indices[] = {0, 4, 1};
+	int indices[] = {
+			0, 4, 1, // front
+			1, 5, 4,
+
+			0, 1, 2, // top
+			2, 3, 1,
+
+			2, 6, 3, // back
+			3, 7, 6,
+
+			0, 4, 2, // right
+			2, 6, 4,
+
+			4, 5, 6, // bottom
+			6, 7, 5,
+
+			3, 7, 1, // left
+			1, 5, 3
+			};
 
 
 	Model *ret = new Model();
