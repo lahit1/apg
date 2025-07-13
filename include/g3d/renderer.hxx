@@ -6,5 +6,6 @@
 namespace RENDERER {
 
 void BEGIN(Camera* p);
+void DRAW(Model* m);
 void END(void);
 }
