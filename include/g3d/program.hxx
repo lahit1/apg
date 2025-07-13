@@ -1,3 +1,5 @@
+#pragma once
+
 #include<g3d/shader.hxx>
 
 struct Program {
