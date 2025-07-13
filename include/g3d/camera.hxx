@@ -2,17 +2,18 @@
 
 #include<glm/glm.hpp>
 
+#define LIMIT_X_ANGLE 75
+#define vec2 glm::vec2
 #define vec3 glm::vec3
 #define mat4 glm::mat4
 
 struct Camera {
 
-	mat4 matrix;
+	vec3 pos;
+	mat4 rot, view;
 
-	float depth;
+	float rotx; // rot can be just a vec2 with manual calculations, may be i do it later ;)
 
-	vec3 pos, rot; // rot can be just a vec2 with manual calculations, may be i do it later ;)
-
-	void rotate(vec3 rotation, float scalex, float scaley, float scalez); // euler rotations
-	void update();
+	void rotate(float radians, vec2 scale); // Scale relative to screen cursor position and screen size
+	void update(); // Calculate view matrix
 };
