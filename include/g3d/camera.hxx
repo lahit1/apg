@@ -2,7 +2,7 @@
 
 #include<glm/glm.hpp>
 
-#define LIMIT_X_ANGLE glm::radians(75)
+#define LIMIT_X_ANGLE glm::radians(75.0f)
 
 #define vec2 glm::vec2
 #define vec3 glm::vec3
