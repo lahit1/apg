@@ -3,8 +3,12 @@
 
 namespace RENDERER {
 
-void BEGIN(Camera* p) {};
-void RENDER(void) {};
+Camera* c_cam;
+
+void BEGIN(Camera* p) {
+	c_cam = p;
+};
+
 void END(void) {};
 
 }
