@@ -1,5 +1,8 @@
 #pragma once
 
+#include<g3d/program.hxx>
+#include<g3d/camera.hxx>
+
 namespace RENDERER {
 
 struct Ball {
@@ -13,7 +16,7 @@ struct Pool { // basicly a linked list :d, i love giving different names than fr
 	inline void unlink(Ball* b);
 };
 
-void BEGIN(Pool* p);
+void BEGIN(Camera* p);
 void RENDER(void);
 void END(void);
 }

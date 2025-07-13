@@ -3,7 +3,7 @@
 
 namespace RENDERER {
 
-void BEGIN(Pool* p) {};
+void BEGIN(Camera* p) {};
 void RENDER(void) {};
 void END(void) {};
 
