@@ -15,5 +15,4 @@ struct Camera {
 	float rotx; // rot can be just a vec2 with manual calculations, may be i do it later ;)
 
 	void rotate(float radians, vec2 scale); // Scale relative to screen cursor position and screen size
-	void update(); // Calculate view matrix
 };
