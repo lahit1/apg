@@ -10,7 +10,7 @@
 struct Camera {
 
 	vec3 pos, dist;
-	mat4 rot, view;
+	mat4 rot, view, proj, vp;
 	float rotx;
 
 	float fov = glm::radians(45.0f);
@@ -21,4 +21,5 @@ struct Camera {
 	void rotate(float radians, vec2 scale); // Scale relative to screen cursor position and screen size
 	void updateView();
 	void updateProjection();
+	void updateVP();
 };
