@@ -4,6 +4,7 @@
 
 #define LIMIT_X_ANGLE glm::radians(75)
 
+#define vec2 glm::vec2
 #define vec3 glm::vec3
 #define mat4 glm::mat4
 
