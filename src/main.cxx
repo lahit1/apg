@@ -8,6 +8,7 @@
 #include <g3d/shader.hxx>
 #include <g3d/program.hxx>
 #include <g3d/model.hxx>
+#include <g3d/renderer.hxx>
 
 const char *vertexShaderSource = R"(
 	#version 330 core
@@ -79,7 +80,9 @@ int main(void) {
 		glEnable(GL_DEPTH_TEST);
 		// 3D renders...
 
-		Models::drawModel(mmodel);
+		RENDERER::DRAW(mmodel);
+
+
 		glDisable(GL_DEPTH_TEST);
 		// 2D renders, like GUI...
 		
