@@ -5,6 +5,12 @@
 vec3 yaxis{0, 1, 0};
 vec3 xaxis{1, 0, 0};
 
+Camera::Camera() {
+	updateView();
+	updateProjection();
+	updateVP();
+}
+
 void Camera::rotate(float radians, vec2 scale) {
 
 	float deltax = radians * scale.y;

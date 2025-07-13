@@ -10,6 +10,8 @@
 
 struct Camera {
 
+	Camera();
+
 	vec3 pos, dist;
 	mat4 rot, view, proj, vp;
 	float rotx;
