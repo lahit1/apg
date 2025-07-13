@@ -14,9 +14,6 @@ struct Model : public Renderable {
 
 namespace Models {
 
-void drawModel(Model* m);
-
-
 Model* createCube(int w, int h, int d);
 
 }

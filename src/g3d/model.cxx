@@ -6,12 +6,6 @@
 
 namespace Models {
 
-void drawModel(Model* m) {
-	glBindVertexArray(m->VAO);
-	glDrawElements(GL_TRIANGLES, m->indexCount, GL_UNSIGNED_INT, 0);
-}
-
-
 Model* createCube(int w, int h, int d) {
 	float vertices[] = {
         	0.5f, 0.5f, 0.5f, // Top - F R
