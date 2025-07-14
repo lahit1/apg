@@ -2,15 +2,17 @@
 
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
-
 #include<g3d/renderable.hxx>
+#include<glm/glm.hpp>
+
+#define mat4 glm::mat4
 
 struct Model : public Renderable {
 	unsigned int VBO, // Buffer array (Vertices data)
 		     VAO,
 		     EBO;
 	size_t indexCount;
-	int matrix[16];
+	mat4 matrix = mat4(1);
 };
 
 
