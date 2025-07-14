@@ -1,16 +1,28 @@
 #include<g3d/renderable.hxx>
 #include<g3d/model.hxx>
 #include<g3d/renderer.hxx>
+#include<glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace RENDERER {
 
 Camera* c_cam;
+Program* c_p;
 
-void BEGIN(Camera* p) {
-	c_cam = p;
+void BEGIN(Camera* c) {
+	c_cam = c;
 };
 
+void USE(Program* p) {
+	glUseProgram(p->ptr);
+	c_p = p;
+}
+
 void DRAW(Model* m) {
+	mat4 mvp = c_cam->view * m->matrix; // Projection doesn't work for now
+
+	glUniformMatrix4fv(c_p->mvpULoc_ptr, 1, GL_FALSE, glm::value_ptr(mvp));
+
         glBindVertexArray(m->VAO);
         glDrawElements(GL_TRIANGLES, m->indexCount, GL_UNSIGNED_INT, 0);
 }
