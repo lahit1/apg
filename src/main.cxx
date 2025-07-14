@@ -16,11 +16,13 @@ const char *vertexShaderSource = R"(
 	layout(location = 0) in vec2 aPos;         // 2D position
 	layout(location = 1) in vec3 aColor;       // RGB color
 
+	uniform mat4 mvpU;
+
 	out vec3 vColor;  // Pass color to fragment shader
 
 	void main()
 	{
-		gl_Position = vec4(aPos, 0.0, 1.0); // convert to 4D vec
+		gl_Position = mvpU * vec4(aPos, 0.0, 1.0); // convert to 4D vec
 		// gl_Position.z = 5;
 		// vColor = aColor;  // pass through to fragment
 		vColor = vec3(1,0,0);
@@ -69,19 +71,29 @@ int main(void) {
 	program->attach(fragment);
 	program->link();
 
+	Camera* cam = new Camera();
+	//cam->pos.z = -5;
+	//cam->updateView();
+	//cam->updateVP();
+
 	Model* mmodel = Models::createCube(0,0,0);
 
 	while(!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		program->use();
+		RENDERER::USE(program);
 
 		glEnable(GL_DEPTH_TEST);
 		// 3D renders...
 
-		RENDERER::DRAW(mmodel);
+		cam->rotate(0.01f, vec2(1,0));
+		cam->pos.y -= 0.01f;
+		cam->updateView();
+		cam->updateVP();
 
+		RENDERER::BEGIN(cam);
+		RENDERER::DRAW(mmodel);
 
 		glDisable(GL_DEPTH_TEST);
 		// 2D renders, like GUI...
