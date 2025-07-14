@@ -12,8 +12,8 @@ struct Camera {
 
 	Camera();
 
-	vec3 pos, dist;
-	mat4 rot, view, proj, vp;
+	vec3 pos = vec3(0,0,0), dist = vec3(0,0,0);
+	mat4 rot = mat4(1), view, proj, vp;
 	float rotx;
 
 	float fov = glm::radians(45.0f);
