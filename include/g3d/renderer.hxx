@@ -5,7 +5,8 @@
 
 namespace RENDERER {
 
-void BEGIN(Camera* p);
+void BEGIN(Camera* c);
+void USE(Program* p);
 void DRAW(Model* m);
 void END(void);
 }
