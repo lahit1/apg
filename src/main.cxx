@@ -10,10 +10,13 @@
 #include <g3d/model.hxx>
 #include <g3d/renderer.hxx>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
+
 const char *vertexShaderSource = R"(
 	#version 330 core
 
-	layout(location = 0) in vec2 aPos;         // 2D position
+	layout(location = 0) in vec3 aPos;         // 3D position
 	layout(location = 1) in vec3 aColor;       // RGB color
 
 	uniform mat4 mvpU;
@@ -22,9 +25,7 @@ const char *vertexShaderSource = R"(
 
 	void main()
 	{
-		gl_Position = mvpU * vec4(aPos, 0.0, 1.0); // convert to 4D vec
-		// gl_Position.z = 5;
-		// vColor = aColor;  // pass through to fragment
+		gl_Position = mvpU * vec4(aPos, 1.0); // convert to 4D vec
 		vColor = vec3(1,0,0);
 	}
 
@@ -43,6 +44,20 @@ void main()
 
 )";
 
+
+Camera* c_cam;
+
+void framebuffer_size_callback(GLFWwindow* win, int w, int h) {
+	glViewport(0, 0, w, h);
+	c_cam->aspect = static_cast<float>(w) / h;
+	c_cam->updateProjection();
+	c_cam->updateVP();
+
+	std::cout << glm::to_string(c_cam->vp) << std::endl;
+}
+
+float valuee;
+
 int main(void) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -56,7 +71,10 @@ int main(void) {
         	return -1;
 	}
 
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
 	glfwMakeContextCurrent(window);
+
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         	std::cout << "Couldn't load GLAD(library)" << std::endl;
@@ -71,15 +89,18 @@ int main(void) {
 	program->attach(fragment);
 	program->link();
 
-	Camera* cam = new Camera();
-	//cam->pos.z = -5;
-	//cam->updateView();
-	//cam->updateVP();
+	c_cam = new Camera();
+	c_cam->dist.z = 5;
+	c_cam->updateView();
+	c_cam->updateVP();
+
 
 	Model* mmodel = Models::createCube(0,0,0);
 
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	//glDisable(GL_CULL_FACE);
+
 	while(!glfwWindowShouldClose(window)) {
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		RENDERER::USE(program);
@@ -87,12 +108,14 @@ int main(void) {
 		glEnable(GL_DEPTH_TEST);
 		// 3D renders...
 
-		cam->rotate(0.01f, vec2(1,0));
-		cam->pos.y -= 0.01f;
-		cam->updateView();
-		cam->updateVP();
+		// glFrontFace(GL_CW);
 
-		RENDERER::BEGIN(cam);
+		c_cam->dist.z = 5 * glm::cos(valuee += 0.01f);
+		c_cam->dist.x = 5 * glm::sin(valuee);
+		c_cam->updateView();
+		c_cam->updateVP();
+
+		RENDERER::BEGIN(c_cam);
 		RENDERER::DRAW(mmodel);
 
 		glDisable(GL_DEPTH_TEST);
