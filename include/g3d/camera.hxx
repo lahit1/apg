@@ -2,12 +2,8 @@
 
 #include<glm/glm.hpp>
 
-#define LIMIT_X_ANGLE glm::radians(75.0f)
-
-#define vec2 glm::vec2
 #define vec3 glm::vec3
 #define mat4 glm::mat4
-
 
 constexpr vec3 zaxis{0, 0, 1};
 constexpr vec3 yaxis{0, 1, 0};
@@ -25,7 +21,6 @@ struct Camera {
 	float nearPlane = 0.1f;
 	float farPlane = 100.0f;
 
-	void rotate(float radians, vec2 scale); // Scale relative to screen cursor position and screen size
 	void updateView();
 	void updateProjection();
 	void updateVP();
