@@ -51,7 +51,8 @@ Model* createCube(int w, int h, int d) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ret->EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ret->indexCount = sizeof(indices), indices, GL_STATIC_DRAW);
+	ret->indexCount = sizeof(indices) / sizeof(int);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
 	// Set pointer
