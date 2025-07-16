@@ -39,18 +39,19 @@ Model* createCube(int w, int h, int d) {
 			1, 5, 3
 			};
 
+	unsigned int VBO, EBO;
 
 	Model *ret = new Model();
 	glGenVertexArrays(1, &ret->VAO);
-	glGenBuffers(1, &ret->VBO);
-	glGenBuffers(1, &ret->EBO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
 
 	glBindVertexArray(ret->VAO); // Use the buffer
 
-	glBindBuffer(GL_ARRAY_BUFFER, ret->VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ret->EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	ret->indexCount = sizeof(indices) / sizeof(int);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 

@@ -8,9 +8,7 @@
 #define mat4 glm::mat4
 
 struct Model : public Renderable {
-	unsigned int VBO, // Buffer array (Vertices data)
-		     VAO,
-		     EBO;
+	unsigned int VAO; // Buffer array (Vertices data)
 	size_t indexCount;
 	mat4 matrix = mat4(1);
 };
