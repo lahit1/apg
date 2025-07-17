@@ -19,7 +19,7 @@ void USE(Program* p) {
 }
 
 void DRAW(Model* m) {
-	mat4 mvp = c_cam->vp * m->matrix;
+	glm::mat4 mvp = c_cam->vp * m->matrix;
 
 	glUniformMatrix4fv(c_p->mvpULoc_ptr, 1, GL_FALSE, glm::value_ptr(mvp));
 
