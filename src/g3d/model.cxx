@@ -13,15 +13,15 @@ namespace Models {
 Model* createCube(int w, int h, int d) {
 
 	std::vector<Vertex> vertices = {
-		{{0.5f, 0.5f, 0.5f}, {0, 1, 0}},
-		{{-0.5f, 0.5f, 0.5f}, {0, 1, 0}},
-		{{0.5f, 0.5f, -0.5f}, {0, 1, 0}},
-		{{-0.5f, 0.5f, -0.5f}, {0, 1, 0}},
+		{{0.5f, 0.5f, 0.5f}, {0, 1, 0}, {0,0}, {1,1,1,1}},
+		{{-0.5f, 0.5f, 0.5f}, {0, 1, 0}, {0,0}, {0,1,0,1}},
+		{{0.5f, 0.5f, -0.5f}, {0, 1, 0}, {0,0}, {1,0,0,1}},
+		{{-0.5f, 0.5f, -0.5f}, {0, 1, 0}, {0,0}, {0,1,0,1}},
 
-		{{0.5f, -0.5f, 0.5f}, {0, -1, 0}},
-                {{-0.5f, -0.5f, 0.5f}, {0, -1, 0}},
-                {{0.5f, -0.5f, -0.5f}, {0, -1, 0}},
-                {{-0.5f, -0.5f, -0.5f}, {0, -1, 0}}
+		{{0.5f, -0.5f, 0.5f}, {0, -1, 0}, {0,0}, {0,0,1,1}},
+                {{-0.5f, -0.5f, 0.5f}, {0, -1, 0}, {0,0}, {1,0,0,1}},
+                {{0.5f, -0.5f, -0.5f}, {0, -1, 0}, {0,0}, {0,0,1,1}},
+                {{-0.5f, -0.5f, -0.5f}, {0, -1, 0}, {0,0}, {1,0,0,1}}
 	};
 
 	int indices[] = {
@@ -91,6 +91,10 @@ Model* createCube(int w, int h, int d) {
                                 (void*)offsetof(Vertex, color)); // ofset of normal per vertex
 
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
