@@ -6,8 +6,7 @@
 #include<g3d/material.hxx>
 #include<glm/glm.hpp>
 
-#define mat4 glm::mat4
-
+#include<istream>
 
 struct Model : public Renderable {
 	unsigned int VAO; // Buffer array (Vertices data)
@@ -15,12 +14,14 @@ struct Model : public Renderable {
 
 	Material material;
 
-	mat4 matrix = mat4(1);
+	glm::mat4 matrix = glm::mat4(1);
 };
 
 
 namespace Models {
 
 Model* createCube(int w, int h, int d);
+
+Model* loadObjModel(std::istream in);
 
 }
