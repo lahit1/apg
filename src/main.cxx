@@ -17,16 +17,18 @@ const char *vertexShaderSource = R"(
 	#version 330 core
 
 	layout(location = 0) in vec3 aPos;         // 3D position
-	layout(location = 1) in vec3 aColor;       // RGB color
+	layout(location = 1) in vec3 aNorm;         // Surface normal
+//        layout(location = 2) in vec2 aTexCoord;       // Texture Coordinate
+	layout(location = 3) in vec4 aColor;       // RGBA color
 
 	uniform mat4 mvpU;
 
-	out vec3 vColor;  // Pass color to fragment shader
+	out vec4 vColor;  // Pass color to fragment shader
 
 	void main()
 	{
 		gl_Position = mvpU * vec4(aPos, 1.0); // convert to 4D vec
-		vColor = vec3(1,0,0);
+		vColor = aColor;
 	}
 
 )";
@@ -34,12 +36,12 @@ const char *vertexShaderSource = R"(
 const char *fragmentShaderSource = R"(
 #version 330 core
 
-in vec3 vColor;          // Interpolated from vertex shader
+in vec4 vColor;          // Interpolated from vertex shader
 out vec4 FragColor;      // Output color
 
 void main()
 {
-    FragColor = vec4(vColor, 1.0); // RGBA: color + full opacity
+    FragColor = vColor;
 }
 
 )";
@@ -52,8 +54,6 @@ void framebuffer_size_callback(GLFWwindow* win, int w, int h) {
 	c_cam->aspect = static_cast<float>(w) / h;
 	c_cam->updateProjection();
 	c_cam->updateVP();
-
-	std::cout << glm::to_string(c_cam->vp) << std::endl;
 }
 
 float valuee;
