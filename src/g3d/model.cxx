@@ -1,23 +1,28 @@
+#include<vector>
+
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
 #include<g3d/renderable.hxx>
 #include<g3d/model.hxx>
+#include<g3d/vertex.hxx>
+
 
 namespace Models {
 
 Model* createCube(int w, int h, int d) {
-	float vertices[] = {
-        	0.5f, 0.5f, 0.5f, // Top - F R
-		-0.5f, 0.5f, 0.5f, // F L
-		0.5f, 0.5f, -0.5f, // B R
-		-0.5f, 0.5f, -0.5f, // B L
-	
-		0.5f, -0.5f, 0.5f, // Bottom - F R
-        	-0.5f, -0.5f, 0.5f, // F L
-	        0.5f, -0.5f, -0.5f, // B R
-	        -0.5f, -0.5f, -0.5f, // B L
-    	};
+
+	std::vector<Vertex> vertices = {
+		{{0.5f, 0.5f, 0.5f}, {0, 1, 0}},
+		{{-0.5f, 0.5f, 0.5f}, {0, 1, 0}},
+		{{0.5f, 0.5f, -0.5f}, {0, 1, 0}},
+		{{-0.5f, 0.5f, -0.5f}, {0, 1, 0}},
+
+		{{0.5f, -0.5f, 0.5f}, {0, -1, 0}},
+                {{-0.5f, -0.5f, 0.5f}, {0, -1, 0}},
+                {{0.5f, -0.5f, -0.5f}, {0, -1, 0}},
+                {{-0.5f, -0.5f, -0.5f}, {0, -1, 0}}
+	};
 
 	int indices[] = {
 			0, 4, 1, // front
@@ -49,7 +54,7 @@ Model* createCube(int w, int h, int d) {
 	glBindVertexArray(ret->VAO); // Use the buffer
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	ret->indexCount = sizeof(indices) / sizeof(int);
@@ -61,8 +66,29 @@ Model* createCube(int w, int h, int d) {
 				3,  // vec3
 				GL_FLOAT,
 				GL_FALSE,
-				3 * sizeof(float), // sizeof(vec3)
-				(void*)0); // ofset per vertex
+				sizeof(Vertex), // sizeof(Vertex)
+				(void*)offsetof(Vertex, pos)); // ofset of position per vertex
+
+	glVertexAttribPointer(1, // layout = 1
+                                3,  // vec3
+                                GL_FLOAT,
+                                GL_FALSE,
+                                sizeof(Vertex), // sizeof(Vertex)
+                                (void*)offsetof(Vertex, norm)); // ofset of normal per vertex
+
+	glVertexAttribPointer(2, // layout = 2
+                                2,  // vec2
+                                GL_FLOAT,
+                                GL_FALSE,
+                                sizeof(Vertex), // sizeof(Vertex)
+                                (void*)offsetof(Vertex, texCoord)); // ofset of normal per vertex
+
+	glVertexAttribPointer(3, // layout = 3
+                                4,  // vec2
+                                GL_FLOAT,
+                                GL_FALSE,
+                                sizeof(Vertex), // sizeof(Vertex)
+                                (void*)offsetof(Vertex, color)); // ofset of normal per vertex
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -70,7 +96,5 @@ Model* createCube(int w, int h, int d) {
 
 	return ret;
 }
-
-
 
 }
