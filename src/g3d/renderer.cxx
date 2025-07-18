@@ -38,7 +38,9 @@ void DRAW(Model* m) {
                 }
 
         xorv = m->active_vertex_attr_arrs & ~active_vertex_attr_arrs;                                                                                           for(unsigned int i=0; i < 8; i++)
-                if(xorv & (1 << i)){
+
+	for(unsigned int i=0; i < 8; i++)
+                if(xorv & (1 << i)) {
                         glEnableVertexAttribArray(i);
                         std::cout << "Enable: " << i << std::endl;
                 }
