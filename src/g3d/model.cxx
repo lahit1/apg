@@ -90,15 +90,21 @@ Model* createCube(int w, int h, int d) {
                                 sizeof(Vertex), // sizeof(Vertex)
                                 (void*)offsetof(Vertex, color)); // ofset of normal per vertex
 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-	glEnableVertexAttribArray(3);
+	ret->active_vertex_attr_arrs = VERTEX_ATTR_ARR1 | VERTEX_ATTR_ARR2 | VERTEX_ATTR_ARR3 | VERTEX_ATTR_ARR4;
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 	return ret;
 }
+
+Model* loadObjModel(std::istream* in) {
+	Model *m = new Model();
+
+	return m;
+}
+
+
+
 
 }
