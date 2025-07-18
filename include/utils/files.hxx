@@ -6,8 +6,8 @@
 
 namespace Files {
 
-std::istream& openi(const char* filename);
-std::ostream& openo(const char* filename);
-std::iostream& openio(const char* filename);
+std::istream* openi(const char* filename);
+std::ostream* openo(const char* filename);
+std::iostream* openio(const char* filename);
 
 }
