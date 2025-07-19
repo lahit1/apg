@@ -10,6 +10,8 @@
 #include <g3d/model.hxx>
 #include <g3d/renderer.hxx>
 
+#include <utils/files.hxx>
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 
@@ -28,7 +30,7 @@ const char *vertexShaderSource = R"(
 	void main()
 	{
 		gl_Position = mvpU * vec4(aPos, 1.0); // convert to 4D vec
-		vColor = aColor;
+		vColor = vec4(1,0,0,1)/*aColor*/;
 	}
 
 )";
@@ -95,7 +97,12 @@ int main(void) {
 	c_cam->updateVP();
 
 
-	Model* mmodel = Models::createCube(0,0,0);
+
+	Model* mmodel  = Models::createCube(0,0,0);
+	std::istream* is = Files::openi("res/Car.obj");
+	Model* mmodel2 = Models::loadObjModel(is);
+//	is->close();
+	delete is;
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	//glDisable(GL_CULL_FACE);
@@ -117,6 +124,7 @@ int main(void) {
 
 		RENDERER::BEGIN(c_cam);
 		RENDERER::DRAW(mmodel);
+		RENDERER::DRAW(mmodel2);
 
 		glDisable(GL_DEPTH_TEST);
 		// 2D renders, like GUI...
