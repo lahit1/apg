@@ -105,7 +105,6 @@ Model* loadObjModel(std::istream* in) {
 	char cwd[PATH_MAX];
 	getcwd(cwd, sizeof(cwd));
 
-	Model *m = new Model();
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec2> texcoords;
 	std::vector<glm::vec3> normals;
@@ -131,6 +130,7 @@ Model* loadObjModel(std::istream* in) {
 		} else if(str == "f") {
 			std::string faceStr;
 			for(int i=0; i < 3; i++) {
+				*in >> faceStr;
 				int posi=0, texi=0, nori=0;
 				size_t firstSlash = faceStr.find('/');
 		                size_t secondSlash = faceStr.find('/', firstSlash + 1);
@@ -175,7 +175,7 @@ Model* loadObjModel(std::istream* in) {
         glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        ret->indexCount = sizeof(indices) / sizeof(int);
+        ret->indexCount = indices.size();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
 	// Set pointer
@@ -205,7 +205,7 @@ Model* loadObjModel(std::istream* in) {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
-	return m;
+	return ret;
 }
 
 }
