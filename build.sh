@@ -25,6 +25,9 @@ done
 
 # Link all object files
 g++ "${objs[@]}" -o ./bin/program "${link_flags[@]}" $std
+
+cp -r res/ bin/
+
 if [ $? -eq 0 ]; then
     echo "Compilation success: ./bin/program"
 else
