@@ -23,5 +23,6 @@ namespace Models {
 Model* createCube(int w, int h, int d);
 
 Model* loadObjModel(std::istream* in);
+Model* loadObjTrianglesModel(std::istream* in);
 
 }
