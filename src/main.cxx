@@ -101,6 +101,11 @@ int main(void) {
 	Mesh* mmodel  = Meshes::createCube(0,0,0);
 	std::istream* is = Files::openi("res/Car.obj");
 	Mesh* mmodel2 = Meshes::loadObjMesh(is);
+
+	Model *bmodel = new Model();
+	bmodel->addChild(mmodel);
+	bmodel->addChild(mmodel2);
+
 //	is->close();
 	delete is;
 
@@ -124,8 +129,8 @@ int main(void) {
 
 		RENDERER::BEGIN(c_cam);
 
-		RENDERER::DRAW(mmodel);
-		RENDERER::DRAW(mmodel2);
+		RENDERER::DRAW(bmodel);
+//		RENDERER::DRAW(mmodel2);
 
 		glDisable(GL_DEPTH_TEST);
 		// 2D renders, like GUI...
