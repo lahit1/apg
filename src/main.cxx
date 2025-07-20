@@ -7,7 +7,7 @@
 
 #include <g3d/shader.hxx>
 #include <g3d/program.hxx>
-#include <g3d/model.hxx>
+#include <g3d/mesh.hxx>
 #include <g3d/renderer.hxx>
 
 #include <utils/files.hxx>
@@ -20,7 +20,7 @@ const char *vertexShaderSource = R"(
 
 	layout(location = 0) in vec3 aPos;         // 3D position
 	layout(location = 1) in vec3 aNorm;         // Surface normal
-//        layout(location = 2) in vec2 aTexCoord;       // Texture Coordinate
+        layout(location = 2) in vec2 aTexCoord;       // Texture Coordinate
 	layout(location = 3) in vec4 aColor;       // RGBA color
 
 	uniform mat4 mvpU;
@@ -98,9 +98,9 @@ int main(void) {
 
 
 
-	Model* mmodel  = Models::createCube(0,0,0);
+	Mesh* mmodel  = Meshes::createCube(0,0,0);
 	std::istream* is = Files::openi("res/Car.obj");
-	Model* mmodel2 = Models::loadObjModel(is);
+	Mesh* mmodel2 = Meshes::loadObjMesh(is);
 //	is->close();
 	delete is;
 
@@ -123,6 +123,7 @@ int main(void) {
 		c_cam->updateVP();
 
 		RENDERER::BEGIN(c_cam);
+
 		RENDERER::DRAW(mmodel);
 		RENDERER::DRAW(mmodel2);
 

@@ -7,6 +7,6 @@ namespace RENDERER {
 
 void BEGIN(Camera* c);
 void USE(Program* p);
-void DRAW(Model* m);
+void DRAW(Mesh* m);
 void END(void);
 }

@@ -1,5 +1,5 @@
 #include<g3d/renderable.hxx>
-#include<g3d/model.hxx>
+#include<g3d/mesh.hxx>
 #include<g3d/renderer.hxx>
 #include<glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -20,8 +20,8 @@ void USE(Program* p) {
 	c_p = p;
 }
 
-void DRAW(Model* m) {
-	glm::mat4 mvp = c_cam->vp * m->matrix;
+void DRAW(Mesh* m) {
+	glm::mat4 mvp = c_cam->vp;
 
 	glUniformMatrix4fv(c_p->mvpULoc_ptr, 1, GL_FALSE, glm::value_ptr(mvp));
 
