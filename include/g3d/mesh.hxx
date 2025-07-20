@@ -3,8 +3,6 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<g3d/renderable.hxx>
-#include<g3d/material.hxx>
-#include<glm/glm.hpp>
 
 #include<istream>
 
