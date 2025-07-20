@@ -11,10 +11,6 @@
 struct Mesh : public Renderable {
 	unsigned int VAO=0; // Buffer array (Vertices data)
 	size_t indexCount=0;
-
-	Material material;
-
-	glm::mat4 matrix = glm::mat4(1);
 };
 
 
