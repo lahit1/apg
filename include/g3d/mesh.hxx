@@ -8,7 +8,7 @@
 
 #include<istream>
 
-struct Model : public Renderable {
+struct Mesh : public Renderable {
 	unsigned int VAO=0; // Buffer array (Vertices data)
 	size_t indexCount=0;
 
@@ -18,11 +18,11 @@ struct Model : public Renderable {
 };
 
 
-namespace Models {
+namespace Meshes {
 
-Model* createCube(int w, int h, int d);
+Mesh* createCube(int w, int h, int d);
 
-Model* loadObjModel(std::istream* in);
-Model* loadObjTrianglesModel(std::istream* in);
+Mesh* loadObjMesh(std::istream* in);
+Mesh* loadObjTrianglesMesh(std::istream* in);
 
 }

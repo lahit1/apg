@@ -9,12 +9,12 @@
 #include<GLFW/glfw3.h>
 
 #include<g3d/renderable.hxx>
-#include<g3d/model.hxx>
+#include<g3d/mesh.hxx>
 #include<g3d/vertex.hxx>
 
-namespace Models {
+namespace Meshes {
 
-Model* createCube(int w, int h, int d) {
+Mesh* createCube(int w, int h, int d) {
 
 	std::vector<Vertex> vertices = {
 		{{0.5f, 0.5f, 0.5f}, {0, 1, 0}, {0,0}, {1,1,1,1}},
@@ -50,7 +50,7 @@ Model* createCube(int w, int h, int d) {
 
 	unsigned int VBO=0, EBO=0;
 
-	Model *ret = new Model();
+	Mesh *ret = new Mesh();
 	glGenVertexArrays(1, &ret->VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
@@ -105,7 +105,7 @@ Model* createCube(int w, int h, int d) {
 	return ret;
 }
 
-Model* loadObjModel(std::istream* in) {
+Mesh* loadObjMesh(std::istream* in) {
         char cwd[PATH_MAX];
         getcwd(cwd, sizeof(cwd));
 
@@ -178,7 +178,7 @@ Model* loadObjModel(std::istream* in) {
 
         unsigned int VBO=0, EBO=0;
 
-        Model *ret = new Model();
+        Mesh *ret = new Mesh();
         glGenVertexArrays(1, &ret->VAO);
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
@@ -226,7 +226,7 @@ Model* loadObjModel(std::istream* in) {
 
 
 
-Model* loadObjTrianglesModel(std::istream* in) {
+Mesh* loadObjTrianglesMesh(std::istream* in) {
 	char cwd[PATH_MAX];
 	getcwd(cwd, sizeof(cwd));
 
@@ -299,7 +299,7 @@ Model* loadObjTrianglesModel(std::istream* in) {
 
 	unsigned int VBO=0, EBO=0;
 
-	Model *ret = new Model();
+	Mesh *ret = new Mesh();
         glGenVertexArrays(1, &ret->VAO);
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
