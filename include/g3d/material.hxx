@@ -1,8 +1,9 @@
 #pragma once
 
-#include<istream>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <g3d/texture.hxx>
+
 
 struct Material {
 	Texture *diffuseTexture, *specularTexture, *normalTexture;
