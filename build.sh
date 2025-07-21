@@ -5,7 +5,7 @@ mkdir -p ./build
 
 srcs=$(find ./src ./glad/src -type f \( -name "*.c*" \))
 
-includes=(-I./include -I./glad/include)
+includes=(-I./include -I./glad/include -I./stb)
 compile_flags=(-O0 -g -c -pipe -march=native)
 link_flags=(-lglfw -ldl)
 std=-std=c++17
