@@ -1,3 +1,5 @@
+#pragma once
+
 #include <g3d/mesh.hxx>
 #include <g3d/material.hxx>
 #include <glm/glm.hpp>
@@ -9,7 +11,7 @@ class Model : Renderable {
 
 	public:
 
-	Material mat;
+	Material* material;
 
 	glm::mat4 matrix = glm::mat4(1);
 
