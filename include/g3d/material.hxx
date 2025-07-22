@@ -6,7 +6,7 @@
 
 
 struct Material {
-	Texture *diffuseTexture, *specularTexture, *normalTexture;
+	Texture diffuseTexture, specularTexture, normalTexture;
 
         glm::vec3 diffuseColor = glm::vec3(1.0f);
         glm::vec3 specularColor = glm::vec3(1.0f);
