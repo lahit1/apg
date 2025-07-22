@@ -21,29 +21,66 @@ const char *vertexShaderSource = R"(
 	layout(location = 0) in vec3 aPos;         // 3D position
 	layout(location = 1) in vec3 aNorm;         // Surface normal
         layout(location = 2) in vec2 aTexCoord;       // Texture Coordinate
-	layout(location = 3) in vec4 aColor;       // RGBA color
+//	layout(location = 3) in vec4 aColor;       // RGBA color
 
-	uniform mat4 mvpU;
+	uniform mat4 vpU;
+	uniform mat4 modelU;
+	uniform mat4 normalU;
 
-	out vec4 vColor;  // Pass color to fragment shader
+	out vec3 FragPos;
+	out vec3 Normal;
 
 	void main()
 	{
-		gl_Position = mvpU * vec4(aPos, 1.0); // convert to 4D vec
-		vColor = vec4(1,0,0,1)/*aColor*/;
+		vec4 worldPos = modelU * vec4(aPos, 1.0);
+
+		FragPos = vec3(worldPos);  // world-space position
+		Normal = mat3(normalU) * aNorm;      // correct normal transformation
+
+		gl_Position = vpU * worldPos; // convert to 4D vec
 	}
 
 )";
 
+
 const char *fragmentShaderSource = R"(
 #version 330 core
+struct Material {
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
 
-in vec4 vColor;          // Interpolated from vertex shader
+uniform Material material;
+
+uniform vec3 viewPos;      // Camera position
+
+in vec3 FragPos;
+in vec3 Normal;
+
 out vec4 FragColor;      // Output color
 
 void main()
 {
-    FragColor = vColor;
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(vec3(1, 0, 1));
+    vec3 viewDir  = normalize(viewPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
+
+    vec3 ambient = material.ambient;
+
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = material.diffuse * diff;
+
+
+    // Specular
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = material.specular * spec;
+
+
+    vec3 result = ambient + diffuse + specular;
+    FragColor = vec4(pow(result, vec3(1.0 / 2.2)), 1.0);
 }
 
 )";
@@ -103,6 +140,12 @@ int main(void) {
 	Mesh* mmodel2 = Meshes::loadObjMesh(is);
 
 	Model *bmodel = new Model();
+	Material* mats = new Material();
+	mats->diffuseColor = glm::vec3(1, 0, 0);
+	mats->specularColor = glm::vec3(1, 1, 1);
+	mats->shininess = 64.0f;
+
+	bmodel->material = mats;
 	bmodel->addChild(mmodel);
 	bmodel->addChild(mmodel2);
 
