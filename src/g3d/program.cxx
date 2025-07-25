@@ -6,9 +6,15 @@ namespace Programs {
                 *normalULoc = "normalU";
 
         const char 
-                *materialDiffuseLoc = "material.diffuse",
-                *materialSpecularLoc = "material.specular",
-                *materialShininessLoc = "material.shininess";
+                *materialAmbientCLoc = "materialAmbientC",
+                *materialDiffuseCLoc = "materialDiffuseC",
+                *materialSpecularCLoc = "materialSpecularC",
+                *materialShininessLoc = "materialShininess";
+
+	const char
+                *materialDiffuseTLoc = "materialDiffuseT",
+                *materialSpecularTLoc = "materialSpecularT",
+                *materialNormalTLoc = "materialNormalT";
 
         const char *viewPosULoc = "viewPos";
 
