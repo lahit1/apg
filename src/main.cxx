@@ -29,6 +29,7 @@ const char *vertexShaderSource = R"(
 
 	out vec3 FragPos;
 	out vec3 Normal;
+	out vec2 TexCoord;
 
 	void main()
 	{
@@ -36,6 +37,7 @@ const char *vertexShaderSource = R"(
 
 		FragPos = vec3(worldPos);  // world-space position
 		Normal = mat3(normalU) * aNorm;      // correct normal transformation
+		TexCoord = aTexCoord;
 
 		gl_Position = vpU * worldPos; // convert to 4D vec
 	}
@@ -45,19 +47,23 @@ const char *vertexShaderSource = R"(
 
 const char *fragmentShaderSource = R"(
 #version 330 core
-struct Material {
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
-	float shininess;
-};
 
-uniform Material material;
+
+uniform vec3 materialAmbientC;
+uniform vec3 materialDiffuseC;
+uniform vec3 materialSpecularC;
+uniform float materialShininess;
+
+uniform sampler2D materialDiffuseT;
+uniform sampler2D materialSpecularT;
+uniform sampler2D materialNormalT;
+
 
 uniform vec3 viewPos;      // Camera position
 
 in vec3 FragPos;
 in vec3 Normal;
+in vec2 TexCoord;
 
 out vec4 FragColor;      // Output color
 
@@ -68,19 +74,23 @@ void main()
     vec3 viewDir  = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
 
-    vec3 ambient = material.ambient;
+//    vec3 ambient = materialAmbientC;
+    vec3 ambient = vec3(0, 0, 0);
 
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = material.diffuse * diff;
+//    vec3 diffuse = materialDiffuseC * diff;
+    vec3 diffuse = vec3(0.5f, 0, 0) * diff;
 
 
     // Specular
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = material.specular * spec;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), materialShininess);
+//    vec3 specular = materialSpecularC * spec;
+    vec3 specular = vec3(0.5f, 0.1f, 0.1f) * spec;
 
 
     vec3 result = ambient + diffuse + specular;
     FragColor = vec4(pow(result, vec3(1.0 / 2.2)), 1.0);
+//	FragColor = vec4(vec3(diff), 1.0);
 }
 
 )";
