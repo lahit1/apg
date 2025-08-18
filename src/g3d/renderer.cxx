@@ -33,25 +33,16 @@ void DRAW(Model* mod) {
         glUniformMatrix4fv(c_p->normalULoc_ptr, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(mod->matrix))));
 
 	Material* mat = mod->material;
-	if(c_p->materialDiffuseCLoc_ptr)
-	        glUniform3fv(c_p->materialDiffuseCLoc_ptr, 1, glm::value_ptr(mat->diffuseColor));
-	if(c_p->materialSpecularCLoc_ptr)
-	        glUniform3fv(c_p->materialSpecularCLoc_ptr, 1, glm::value_ptr(mat->specularColor));
-	if(c_p->materialShininessLoc_ptr)
-	        glUniform1f(c_p->materialShininessLoc_ptr, mat->shininess);
+	for(auto ufor : mat->uniforms_f)
+		if(ufor.first)
+		        ufor.second.binder_funcfv(ufor.first, 1, ufor.second.value);
 
-	if(c_p->materialDiffuseTLoc_ptr) {
-                glUniform1i(c_p->materialDiffuseTLoc_ptr, 0);
-		mat->diffuseTexture.bind(0);
-	}
-        if(c_p->materialSpecularTLoc_ptr) {
-                glUniform1i(c_p->materialSpecularTLoc_ptr, 1);
-		mat->specularTexture.bind(1);
-	}
-        if(c_p->materialNormalTLoc_ptr) {
-                glUniform1i(c_p->materialNormalTLoc_ptr, 2);
-		mat->normalTexture.bind(2);
-	}
+	int i;
+	for(auto tex : mat->textures)
+		if(tex.first) {
+			glUniform1i(tex.first, i);
+	                tex.second.bind(i++);
+		}
 
 	glUniform3fv(c_p->viewPosULoc_ptr, 1, glm::value_ptr(c_cam->pos));
 
