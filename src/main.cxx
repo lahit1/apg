@@ -151,9 +151,9 @@ int main(void) {
 
 	Model *bmodel = new Model();
 	Material* mats = new Material();
-	mats->diffuseColor = glm::vec3(1, 0, 0);
-	mats->specularColor = glm::vec3(1, 1, 1);
-	mats->shininess = 64.0f;
+	mats->add(program->materialDiffuseCLoc_ptr, glm::vec3(1, 0, 0));
+	mats->add(program->materialDiffuseCLoc_ptr, glm::vec3(1, 1, 1));
+	mats->add(program->materialShininessLoc_ptr, 64.f);
 
 	bmodel->material = mats;
 	bmodel->addChild(mmodel);
