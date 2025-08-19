@@ -145,10 +145,8 @@ int main(void) {
 	c_cam->updateView();
 	c_cam->updateVP();
 
-
-
 	Mesh* mmodel  = Meshes::createCube(0,0,0);
-	std::istream* is = Files::openi("res/Car.obj");
+	std::ifstream* is = Files::openi("res/Car.obj");
 	Mesh* mmodel2 = Meshes::loadObjMesh(is);
 
 	Model *bmodel = new Model();
@@ -163,21 +161,16 @@ int main(void) {
 	bmodel->addChild(mmodel);
 	bmodel->addChild(mmodel2);
 
-//	is->close();
+	is->close();
 	delete is;
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	//glDisable(GL_CULL_FACE);
 
 	while(!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		RENDERER::USE(program);
 
-		glEnable(GL_DEPTH_TEST);
-		// 3D renders...
-
-		// glFrontFace(GL_CW);
 
 		c_cam->dist.z = 5 * glm::cos(valuee += 0.01f);
 		c_cam->dist.x = 5 * glm::sin(valuee);
@@ -185,12 +178,14 @@ int main(void) {
 		c_cam->updateVP();
 
 		RENDERER::BEGIN(c_cam);
+		glEnable(GL_DEPTH_TEST);
+		// 3D renders...
 
 		RENDERER::DRAW(bmodel);
-//		RENDERER::DRAW(mmodel2);
+
 
 		glDisable(GL_DEPTH_TEST);
-		// 2D renders, like GUI...
+		// 2D renders...
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
