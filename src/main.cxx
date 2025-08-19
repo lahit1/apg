@@ -9,6 +9,8 @@
 #include <g3d/program.hxx>
 #include <g3d/mesh.hxx>
 #include <g3d/renderer.hxx>
+#include <g3d/materialbuilder.hxx>
+
 
 #include <utils/files.hxx>
 
@@ -150,10 +152,12 @@ int main(void) {
 	Mesh* mmodel2 = Meshes::loadObjMesh(is);
 
 	Model *bmodel = new Model();
-	Material* mats = new Material();
-	mats->add(program->materialDiffuseCLoc_ptr, glm::vec3(1, 0, 0));
-	mats->add(program->materialDiffuseCLoc_ptr, glm::vec3(1, 1, 1));
-	mats->add(program->materialShininessLoc_ptr, 64.f);
+
+	MaterialBuilder matb;
+	matb.add("materialAmbientC", glm::vec3(1, 0, 0));
+        matb.add("materialDiffuseC", glm::vec3(1, 1, 1));
+        matb.add("materialShininess", 64.f);
+	Material *mats = matb.build(program);
 
 	bmodel->material = mats;
 	bmodel->addChild(mmodel);
