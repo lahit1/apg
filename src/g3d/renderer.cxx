@@ -46,10 +46,7 @@ void DRAW(Model* mod) {
 
 	glUniform3fv(c_p->viewPosULoc_ptr, 1, glm::value_ptr(c_cam->pos));
 
-	mod->reset();
-	while(mod->isAvailable()) {
-		Mesh* m = mod->next();
-
+	for(Mesh* m: mod->meshes) {
 		glBindVertexArray(m->VAO);
 	        glDrawElements(GL_TRIANGLES, m->indexCount, GL_UNSIGNED_INT, 0);
 	}
