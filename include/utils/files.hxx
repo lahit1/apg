@@ -1,13 +1,11 @@
 #pragma once
 
-#include <istream>
-#include <ostream>
-#include <iostream>
+#include <fstream>
 
 namespace Files {
 
-std::istream* openi(const char* filename);
-std::ostream* openo(const char* filename);
-std::iostream* openio(const char* filename);
+std::ifstream* openi(const char* filename);
+std::ofstream* openo(const char* filename);
+std::fstream* openio(const char* filename);
 
 }
