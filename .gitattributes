@@ -1,3 +1,3 @@
 glad/** linguist-vendored
 stb/** linguist-vendored
-build.sh linguist-vendored
+Makefile linguist-vendored
