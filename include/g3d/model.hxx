@@ -54,4 +54,6 @@ struct Model : Renderable {
 		}
 		return false;
 	}
+
+	void render() override;
 };

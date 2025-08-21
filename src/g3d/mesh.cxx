@@ -12,6 +12,11 @@
 #include<g3d/mesh.hxx>
 #include<g3d/vertex.hxx>
 
+void Mesh::render() {
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+}
+
 namespace Meshes {
 
 Mesh* createCube(int w, int h, int d) {

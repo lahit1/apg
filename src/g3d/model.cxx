@@ -12,6 +12,23 @@
 #include <sstream>
 #include <unordered_map>
 
+void Model::render() {
+	Material* mat = material;
+	for(auto ufor : mat->uniforms_f)
+		if(ufor.first)
+			ufor.second.binder_funcfv(ufor.first, 1, ufor.second.value);
+
+	int i;
+	for(auto tex : mat->textures)
+		if(tex.first) {
+			glUniform1i(tex.first, i);
+			tex.second.bind(i++);
+		}
+
+	for(Mesh* m: meshes)
+		m->render();
+}
+
 namespace Models {
 Model* loadObjModel(std::istream* in) {
     char cwd[PATH_MAX];

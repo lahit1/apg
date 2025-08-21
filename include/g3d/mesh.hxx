@@ -9,6 +9,8 @@
 struct Mesh : public Renderable {
 	unsigned int VAO=0; // Buffer array (Vertices data)
 	size_t indexCount=0;
+
+	void render() override;
 };
 
 
