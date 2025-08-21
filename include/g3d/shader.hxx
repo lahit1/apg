@@ -1,15 +1,15 @@
 #pragma once
 
+#include<memory>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
-struct Shader {
+struct Shader : std::enable_shared_from_this<Shader> {
 	unsigned int ptr;
-	Shader* next;
 
-	inline Shader* compile() {
+	inline std::shared_ptr<Shader> compile() {
 	        glCompileShader(ptr);
-		return this;
+		return shared_from_this();
 	}
 
 	inline void del() {
@@ -19,8 +19,6 @@ struct Shader {
 
 namespace Shaders {
 
-Shader* create(const GLchar* const* code, GLenum shaderType);
-
-void freeAll();
+std::shared_ptr<Shader> create(const GLchar* const* code, GLenum shaderType);
 
 }

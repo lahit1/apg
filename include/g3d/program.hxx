@@ -43,7 +43,7 @@ struct Program {
 	GLuint viewPosULoc_ptr;
 
 	unsigned int ptr;
-	inline void attach(Shader* s) {
+	inline void attach(std::shared_ptr<Shader> s) {
         	glAttachShader(ptr, s->ptr);
 	}
 

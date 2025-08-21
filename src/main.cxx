@@ -132,8 +132,8 @@ int main(void) {
         	return -1;
 	}
 
-	Shader *vertex = Shaders::create(&vertexShaderSource, GL_VERTEX_SHADER)->compile();
-	Shader *fragment = Shaders::create(&fragmentShaderSource, GL_FRAGMENT_SHADER)->compile();
+	std::shared_ptr<Shader> vertex = Shaders::create(&vertexShaderSource, GL_VERTEX_SHADER)->compile();
+	std::shared_ptr<Shader> fragment = Shaders::create(&fragmentShaderSource, GL_FRAGMENT_SHADER)->compile();
 
 	Program* program = Programs::create();
 	program->attach(vertex);
@@ -191,7 +191,6 @@ int main(void) {
 		glfwPollEvents();
 	}
 
-	Shaders::freeAll();
 	glfwTerminate();
 	return 0;
 }
