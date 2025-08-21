@@ -55,7 +55,7 @@ std::shared_ptr<Mesh> createCube(int w, int h, int d) {
 
 	unsigned int VBO=0, EBO=0;
 
-	std::shared_ptr<Mesh> ret = std::make_ptr<Mesh>();
+	std::shared_ptr<Mesh> ret = std::make_shared<Mesh>();
 	glGenVertexArrays(1, &ret->VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
