@@ -18,14 +18,6 @@ void USE(Program* p) {
 	glUseProgram(p->ptr);
 	c_p = p;
 }
-/*
-void DRAW(Mesh* m) {
-	glUniformMatrix4fv(c_p->vpULoc_ptr, 1, GL_FALSE, glm::value_ptr(c_cam->vp));
-
-        glBindVertexArray(m->VAO);
-        glDrawElements(GL_TRIANGLES, m->indexCount, GL_UNSIGNED_INT, 0);
-}
-*/
 
 void DRAW(Model* mod) {
         glUniformMatrix4fv(c_p->vpULoc_ptr, 1, GL_FALSE, glm::value_ptr(c_cam->vp));
