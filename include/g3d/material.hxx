@@ -22,25 +22,25 @@ struct uniformfv {
 		const GLfloat *value), GLfloat *value) : value(value), binder_funcfv(binder_funcfv) {}
 };
 
-struct Material {
+struct Material : std::enable_shared_from_this<Material> {
 	std::unordered_map<GLuint, uniformfv> uniforms_f;
-	std::unordered_map<GLuint, Texture> textures;
+	std::unordered_map<GLuint, std::shared_ptr<Texture>> textures;
 
-	inline Material* add(GLuint target, glm::vec3 value) {
+	inline std::shared_ptr<Material> add(GLuint target, glm::vec3 value) {
 		uniforms_f[target] = { glUniform3fv, glm::value_ptr(value) };
-		return this;
+		return shared_from_this();
 	}
-	inline Material* add(GLuint target, glm::vec2 value) {
+	inline std::shared_ptr<Material> add(GLuint target, glm::vec2 value) {
 		uniforms_f[target] = uniformfv{ glUniform2fv, glm::value_ptr(value) };
-		return this;
+		return shared_from_this();
 	}
-	inline Material* add(GLuint target, float value) {
+	inline std::shared_ptr<Material> add(GLuint target, float value) {
 		uniforms_f[target] = uniformfv{ glUniform1fv, new float(value) };
-		return this;
+		return shared_from_this();
 	}
 
-	inline Material* add(GLuint target, Texture tex) {
+	inline std::shared_ptr<Material> add(GLuint target, std::shared_ptr<Texture> tex) {
 		textures[target] = tex;
-		return this;
+		return shared_from_this();
 	}
 };

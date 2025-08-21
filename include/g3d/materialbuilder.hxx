@@ -31,8 +31,8 @@ public:
 		return this;
 	}
 
-	inline Material* build(Program* p) {
-		Material *mat = new Material();
+	inline std::shared_ptr<Material> build(Program* p) {
+		std::shared_ptr<Material> mat = std::make_shared<Material>();
 		for(auto u: loads_uf) {
 			std::string u_name;
 			if(reps.find(u.first) != reps.end())

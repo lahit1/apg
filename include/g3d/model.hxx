@@ -17,7 +17,7 @@ struct Model : Renderable {
 	std::vector<std::shared_ptr<Mesh>> meshes;
 	std::unordered_map<std::string, std::shared_ptr<Mesh>> namedMeshes;
 
-	Material* material;
+	std::shared_ptr<Material> material;
 
 	glm::mat4 matrix = glm::mat4(1);
 
