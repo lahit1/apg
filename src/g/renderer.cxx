@@ -19,7 +19,7 @@ void USE(Program* p) {
 	c_p = p;
 }
 
-void DRAW(Model* mod) {
+void DRAW(std::shared_ptr<Model> mod) {
         glUniformMatrix4fv(c_p->vpULoc_ptr, 1, GL_FALSE, glm::value_ptr(c_cam->vp));
         glUniformMatrix4fv(c_p->modelULoc_ptr, 1, GL_FALSE, glm::value_ptr(mod->matrix));
         glUniformMatrix4fv(c_p->normalULoc_ptr, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(mod->matrix))));
