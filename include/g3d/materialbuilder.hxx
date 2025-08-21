@@ -5,7 +5,7 @@ class MaterialBuilder {
 
 	std::unordered_map<std::string, std::string> reps;
 	std::unordered_map<std::string, uniformfv> loads_uf;
-	std::unordered_map<std::string, Texture> loads_tex;
+	std::unordered_map<std::string, std::shared_ptr<Texture>> loads_tex;
 
 public:
         inline MaterialBuilder* add(std::string target, glm::vec3 value) {
@@ -21,7 +21,7 @@ public:
                 return this;
         }
 
-        inline MaterialBuilder* add(std::string target, Texture tex) {
+        inline MaterialBuilder* add(std::string target, std::shared_ptr<Texture> tex) {
                 loads_tex[target] = tex;
                 return this;
         }
