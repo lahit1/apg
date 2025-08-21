@@ -4,43 +4,42 @@
 #include <g3d/material.hxx>
 #include <glm/glm.hpp>
 #include <unordered_map>
+#include <memory>
 
 struct Model;
 
 namespace Models {
-	Model* loadObjModel(std::istream* in);	
+	std::shared_ptr<Model> loadObjModel(std::istream* in);	
 }
 
 struct Model : Renderable {
 
-	std::vector<Mesh*> meshes;
-	std::unordered_map<std::string, Mesh*> namedMeshes;
+	std::vector<std::shared_ptr<Mesh>> meshes;
+	std::unordered_map<std::string, std::shared_ptr<Mesh>> namedMeshes;
 
 	Material* material;
 
 	glm::mat4 matrix = glm::mat4(1);
 
 	~Model() {
-		for (Mesh* mesh : meshes)
-			delete mesh;
 		meshes.clear();
 		namedMeshes.clear();
 	}
 
-	inline void addChild(Mesh *r) {
+	inline void addChild(std::shared_ptr<Mesh> r) {
 		meshes.push_back(r);
 	};
 
-	inline void addChild(Mesh *r, std::string name) {
+	inline void addChild(std::shared_ptr<Mesh> r, std::string name) {
 		meshes.push_back(r);
 		namedMeshes[name] = r;
 	}
 
 
 	inline bool loadFromObj(std::istream* in) {
-		Model* loadedModel = Models::loadObjModel(in);
+		std::shared_ptr<Model> loadedModel = Models::loadObjModel(in);
 		if (loadedModel && !loadedModel->meshes.empty()) {
-			for (Mesh* mesh : loadedModel->meshes)
+			for (std::shared_ptr<Mesh> mesh : loadedModel->meshes)
 				this->meshes.push_back(mesh);
 
 			for (const auto& pair : loadedModel->namedMeshes)
@@ -48,7 +47,6 @@ struct Model : Renderable {
 
 			loadedModel->meshes.clear();
 			loadedModel->namedMeshes.clear();
-			delete loadedModel;
 
 			return true;
 		}

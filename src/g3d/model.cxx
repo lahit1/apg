@@ -25,12 +25,12 @@ void Model::render() {
 			tex.second.bind(i++);
 		}
 
-	for(Mesh* m: meshes)
+	for(std::shared_ptr<Mesh> m: meshes)
 		m->render();
 }
 
 namespace Models {
-Model* loadObjModel(std::istream* in) {
+std::shared_ptr<Model> loadObjModel(std::istream* in) {
     char cwd[PATH_MAX];
     if (getcwd(cwd, sizeof(cwd)) == nullptr) {
         std::cerr << "Warning: Could not get current working directory" << std::endl;
@@ -155,7 +155,7 @@ Model* loadObjModel(std::istream* in) {
     }
 
     // Create model
-    Model* model = new Model();
+    std::shared_ptr<Model> model = std::make_shared<Model>();
 
     // Create a mesh for each object/group
     for (const auto& meshData : meshes) {
@@ -166,7 +166,7 @@ Model* loadObjModel(std::istream* in) {
             continue;
         }
 
-        Mesh* mesh = new Mesh();
+        std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
         unsigned int VBO = 0, EBO = 0;
 
         glGenVertexArrays(1, &mesh->VAO);
