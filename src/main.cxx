@@ -132,14 +132,15 @@ int main(void) {
         	return -1;
 	}
 
-	std::shared_ptr<Shader> vertex = Shaders::create(&vertexShaderSource, GL_VERTEX_SHADER)->compile();
-	std::shared_ptr<Shader> fragment = Shaders::create(&fragmentShaderSource, GL_FRAGMENT_SHADER)->compile();
 
 	Program* program = Programs::create();
-	program->attach(vertex);
-	program->attach(fragment);
-	program->link();
-
+	{
+		std::shared_ptr<Shader> vertex = Shaders::create(&vertexShaderSource, GL_VERTEX_SHADER)->compile();
+		std::shared_ptr<Shader> fragment = Shaders::create(&fragmentShaderSource, GL_FRAGMENT_SHADER)->compile();
+		program->attach(vertex);
+		program->attach(fragment);
+		program->link();
+	}
 	c_cam = new Camera();
 	c_cam->dist.z = 5;
 	c_cam->updateView();
@@ -148,15 +149,14 @@ int main(void) {
 	std::ifstream* is = Files::openi("res/Car.obj");
 	std::shared_ptr<Model> bmodel = Models::loadObjModel(is);
 
-	MaterialBuilder matb;
-	matb.add("materialAmbientC", glm::vec3(1, 0, 0));
-        matb.add("materialDiffuseC", glm::vec3(1, 1, 1));
-        matb.add("materialShininess", 64.f);
+	{
+		MaterialBuilder matb;
+		matb.add("materialAmbientC", glm::vec3(1, 0, 0));
+	        matb.add("materialDiffuseC", glm::vec3(1, 1, 1));
+	        matb.add("materialShininess", 64.f);
 
-	Material *mats = matb.build(program);
-
-	bmodel->material = mats;
-
+		bmodel->material = matb.build(program);
+	}
 	is->close();
 	delete is;
 
