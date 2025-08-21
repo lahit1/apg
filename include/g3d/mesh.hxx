@@ -1,10 +1,6 @@
 #pragma once
 
-#include<glad/glad.h>
-#include<GLFW/glfw3.h>
 #include<g3d/renderable.hxx>
-
-#include<istream>
 
 struct Mesh : public Renderable {
 	unsigned int VAO=0; // Buffer array (Vertices data)
