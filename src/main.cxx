@@ -91,7 +91,8 @@ void main()
 
 
     vec3 result = ambient + diffuse + specular;
-    FragColor = vec4(pow(result, vec3(1.0 / 2.2)), 1.0);
+	FragColor = texture(materialDiffuseT, TexCoord);
+//    FragColor = vec4(pow(result, vec3(1.0 / 2.2)), 1.0);
 //	FragColor = vec4(vec3(diff), 1.0);
 }
 
@@ -132,7 +133,6 @@ int main(void) {
         	return -1;
 	}
 
-
 	Program* program = Programs::create();
 	{
 		std::shared_ptr<Shader> vertex = Shaders::create(&vertexShaderSource, GL_VERTEX_SHADER)->compile();
@@ -150,12 +150,15 @@ int main(void) {
 	std::shared_ptr<Model> bmodel = Models::loadObjModel(is);
 
 	{
-		MaterialBuilder matb;
-		matb.add("materialAmbientC", glm::vec3(1, 0, 0));
-	        matb.add("materialDiffuseC", glm::vec3(1, 1, 1));
-	        matb.add("materialShininess", 64.f);
+		std::shared_ptr<MaterialBuilder> matb = std::make_shared<MaterialBuilder>();
+		matb->add("materialAmbientC", glm::vec3(1, 0, 0));
+	        matb->add("materialDiffuseC", glm::vec3(1, 1, 1));
+	        matb->add("materialShininess", 64.f);
 
-		bmodel->material = matb.build(program);
+		std::shared_ptr<Texture> tex = TextureManager::load("res/texture.jpeg");
+		matb->add("materialDiffuseT", tex);
+
+		bmodel->material = matb->build(program);
 	}
 	is->close();
 	delete is;
