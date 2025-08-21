@@ -18,7 +18,4 @@ namespace Meshes {
 
 Mesh* createCube(int w, int h, int d);
 
-Mesh* loadObjMesh(std::istream* in);
-Mesh* loadObjTrianglesMesh(std::istream* in);
-
 }
