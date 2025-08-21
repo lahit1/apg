@@ -5,13 +5,13 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-#include <g3d/shader.hxx>
-#include <g3d/program.hxx>
+#include <g/shader.hxx>
+#include <g/program.hxx>
 #include <g3d/mesh.hxx>
-#include <g3d/renderer.hxx>
+#include <g/renderer.hxx>
 #include <g3d/materialbuilder.hxx>
 
-
+#include <g/texturemanager.hxx>
 #include <utils/files.hxx>
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -145,21 +145,17 @@ int main(void) {
 	c_cam->updateView();
 	c_cam->updateVP();
 
-	Mesh* mmodel  = Meshes::createCube(0,0,0);
 	std::ifstream* is = Files::openi("res/Car.obj");
-	Mesh* mmodel2 = Meshes::loadObjMesh(is);
-
-	Model *bmodel = new Model();
+	std::shared_ptr<Model> bmodel = Models::loadObjModel(is);
 
 	MaterialBuilder matb;
 	matb.add("materialAmbientC", glm::vec3(1, 0, 0));
         matb.add("materialDiffuseC", glm::vec3(1, 1, 1));
         matb.add("materialShininess", 64.f);
+
 	Material *mats = matb.build(program);
 
 	bmodel->material = mats;
-	bmodel->addChild(mmodel);
-	bmodel->addChild(mmodel2);
 
 	is->close();
 	delete is;
