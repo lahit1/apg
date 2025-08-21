@@ -19,7 +19,7 @@ void Mesh::render() {
 
 namespace Meshes {
 
-Mesh* createCube(int w, int h, int d) {
+std::shared_ptr<Mesh> createCube(int w, int h, int d) {
 
 	std::vector<Vertex> vertices = {
 		{{w/2.f, h/2.f, d/2.f}, {0, 1, 0}, {0,0}, {1,1,1,1}},
@@ -55,7 +55,7 @@ Mesh* createCube(int w, int h, int d) {
 
 	unsigned int VBO=0, EBO=0;
 
-	Mesh *ret = new Mesh();
+	std::shared_ptr<Mesh> ret = std::make_ptr<Mesh>();
 	glGenVertexArrays(1, &ret->VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
