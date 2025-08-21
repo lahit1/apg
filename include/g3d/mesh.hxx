@@ -1,5 +1,6 @@
 #pragma once
 
+#include<memory>
 #include<g3d/renderable.hxx>
 
 struct Mesh : public Renderable {
@@ -12,6 +13,6 @@ struct Mesh : public Renderable {
 
 namespace Meshes {
 
-Mesh* createCube(int w, int h, int d);
+std::shared_ptr<Mesh> createCube(int w, int h, int d);
 
 }
