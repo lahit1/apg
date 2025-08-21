@@ -1,4 +1,4 @@
-#include<g3d/program.hxx>
+#include<g/program.hxx>
 
 namespace Programs {
 	const char *vpULoc = "vpU",

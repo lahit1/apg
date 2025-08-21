@@ -1,6 +1,5 @@
-#include<g3d/camera.hxx>
+#include<g/camera.hxx>
 #include <glm/gtc/matrix_transform.hpp>
-//#include<glm/ext/matrix_transform.inl>
 
 Camera::Camera() {
 	updateView();

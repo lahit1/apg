@@ -1,4 +1,4 @@
-#include<g3d/texturemanager.hxx>
+#include<g/texturemanager.hxx>
 #include<utils/files.hxx>
 
 namespace TextureManager {

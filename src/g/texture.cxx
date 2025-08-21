@@ -1,4 +1,4 @@
-#include<g3d/texture.hxx>
+#include<g/texture.hxx>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include<stb/stb_image.h>

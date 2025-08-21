@@ -1,6 +1,6 @@
 #pragma once
 
-#include<g3d/shader.hxx>
+#include<g/shader.hxx>
 
 struct Program;
 

@@ -2,7 +2,7 @@
 
 #include<memory>
 #include <unordered_map>
-#include<g3d/texture.hxx>
+#include<g/texture.hxx>
 
 namespace TextureManager {
         inline std::unordered_map<std::string, std::shared_ptr<Texture>> cache;

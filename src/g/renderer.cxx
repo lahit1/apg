@@ -1,5 +1,5 @@
 #include<g3d/renderable.hxx>
-#include<g3d/renderer.hxx>
+#include<g/renderer.hxx>
 #include<glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
