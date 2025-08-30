@@ -71,29 +71,8 @@ out vec4 FragColor;      // Output color
 
 void main()
 {
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(vec3(1, 0, 1));
-    vec3 viewDir  = normalize(viewPos - FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);
-
-//    vec3 ambient = materialAmbientC;
-    vec3 ambient = vec3(0, 0, 0);
-
-    float diff = max(dot(norm, lightDir), 0.0);
-//    vec3 diffuse = materialDiffuseC * diff;
-    vec3 diffuse = vec3(0.5f, 0, 0) * diff;
-
-
-    // Specular
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), materialShininess);
-//    vec3 specular = materialSpecularC * spec;
-    vec3 specular = vec3(0.5f, 0.1f, 0.1f) * spec;
-
-
-    vec3 result = ambient + diffuse + specular;
 	FragColor = texture(materialDiffuseT, TexCoord);
-//    FragColor = vec4(pow(result, vec3(1.0 / 2.2)), 1.0);
-//	FragColor = vec4(vec3(diff), 1.0);
+//	FragColor = vec4(TexCoord, 0.0, 1.0);
 }
 
 )";
@@ -142,11 +121,12 @@ int main(void) {
 		program->link();
 	}
 	c_cam = new Camera();
-	c_cam->dist.z = 5;
+	c_cam->dist.z = 40;
+	c_cam->dist.y = 10;
 	c_cam->updateView();
 	c_cam->updateVP();
 
-	std::ifstream* is = Files::openi("res/Car.obj");
+	std::ifstream* is = Files::openi("res/model.obj");
 	std::shared_ptr<Model> bmodel = Models::loadObjModel(is);
 
 	{
@@ -155,7 +135,7 @@ int main(void) {
 	        matb->add("materialDiffuseC", glm::vec3(1, 1, 1));
 	        matb->add("materialShininess", 64.f);
 
-		std::shared_ptr<Texture> tex = TextureManager::load("res/texture.jpeg");
+		std::shared_ptr<Texture> tex = TextureManager::load("res/texture.png");
 		matb->add("materialDiffuseT", tex);
 
 		bmodel->material = matb->build(program);
@@ -171,8 +151,8 @@ int main(void) {
 		RENDERER::USE(program);
 
 
-		c_cam->dist.z = 5 * glm::cos(valuee += 0.01f);
-		c_cam->dist.x = 5 * glm::sin(valuee);
+		c_cam->dist.z = 40 * glm::cos(valuee += 0.01f);
+		c_cam->dist.x = 40 * glm::sin(valuee);
 		c_cam->updateView();
 		c_cam->updateVP();
 
@@ -180,8 +160,8 @@ int main(void) {
 		glEnable(GL_DEPTH_TEST);
 		// 3D renders...
 
-		RENDERER::DRAW(bmodel);
 
+		RENDERER::DRAW(bmodel);
 
 		glDisable(GL_DEPTH_TEST);
 		// 2D renders...
