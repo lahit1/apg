@@ -91,6 +91,7 @@ std::shared_ptr<Model> loadObjModel(std::istream* in) {
                     Vertex v;
                     v.pos = (pi >= 0 && pi < (int)positions.size()) ? positions[pi] : glm::vec3(0.0f);
                     v.texCoord = (ti >= 0 && ti < (int)texcoords.size()) ? texcoords[ti] : glm::vec2(0.0f);
+		    v.texCoord.y = 1.0f - v.texCoord.y;
                     v.norm = (ni >= 0 && ni < (int)normals.size()) ? normals[ni] : glm::vec3(0.0f);
 
                     auto it = std::find(vertices.begin(), vertices.end(), v);
