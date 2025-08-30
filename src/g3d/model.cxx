@@ -31,185 +31,113 @@ void Model::render() {
 
 namespace Models {
 std::shared_ptr<Model> loadObjModel(std::istream* in) {
-    char cwd[PATH_MAX];
-    if (getcwd(cwd, sizeof(cwd)) == nullptr) {
-        std::cerr << "Warning: Could not get current working directory" << std::endl;
-    }
-
     std::vector<glm::vec3> positions;
     std::vector<glm::vec2> texcoords;
     std::vector<glm::vec3> normals;
 
-    std::vector<Vertex> currentVertices;
-    std::vector<uint32_t> currentIndices;
-    
-    std::unordered_map<std::string, std::pair<std::vector<Vertex>, std::vector<uint32_t>>> meshes;
-    std::string currentMeshName = "default";
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
 
-    std::string str;
+    auto parseFaceToken = [](const std::string &token, int &posi, int &texi, int &nori) {
+        posi = texi = nori = -1;
+        size_t firstSlash = token.find('/');
+        size_t secondSlash = token.find('/', firstSlash + 1);
 
-    while (*in >> str) {
-        if (str == "v") {
-            float x, y, z;
-            *in >> x >> y >> z;
+        // position
+        if (firstSlash != std::string::npos)
+            posi = std::stoi(token.substr(0, firstSlash)) - 1;
+        else
+            posi = std::stoi(token) - 1;
+
+        // texcoord
+        if (firstSlash != std::string::npos && firstSlash + 1 < token.size()) {
+            if (secondSlash != std::string::npos && secondSlash > firstSlash + 1)
+                texi = std::stoi(token.substr(firstSlash + 1, secondSlash - firstSlash - 1)) - 1;
+            else
+                texi = std::stoi(token.substr(firstSlash + 1)) - 1;
+        }
+
+        // normal
+        if (secondSlash != std::string::npos && secondSlash + 1 < token.size())
+            nori = std::stoi(token.substr(secondSlash + 1)) - 1;
+    };
+
+    std::string line;
+    while (std::getline(*in, line)) {
+        std::istringstream ss(line);
+        std::string prefix;
+        ss >> prefix;
+
+        if (prefix == "v") {
+            float x, y, z; ss >> x >> y >> z;
             positions.emplace_back(x, y, z);
-        } else if (str == "vt") {
-            float u, v;
-            *in >> u >> v;
+        } else if (prefix == "vt") {
+            float u, v; ss >> u >> v;
             texcoords.emplace_back(u, v);
-        } else if (str == "vn") {
-            float x, y, z;
-            *in >> x >> y >> z;
+        } else if (prefix == "vn") {
+            float x, y, z; ss >> x >> y >> z;
             normals.emplace_back(x, y, z);
-        } else if (str == "o" || str == "g") {
-            // Save current mesh if it has data
-            if (!currentVertices.empty() || !currentIndices.empty()) {
-                meshes[currentMeshName] = {currentVertices, currentIndices};
-                currentVertices.clear();
-                currentIndices.clear();
-            }
-            
-            // Get new mesh name
-            std::string meshName;
-            std::getline(*in, meshName);
-            
-            // Trim whitespace
-            meshName.erase(0, meshName.find_first_not_of(" \t"));
-            meshName.erase(meshName.find_last_not_of(" \t") + 1);
-            
-            if (meshName.empty()) {
-                meshName = (str == "o") ? "object_" + std::to_string(meshes.size()) 
-                                       : "group_" + std::to_string(meshes.size());
-            }
-            
-            currentMeshName = meshName;
-        } else if (str == "f") {
-            std::vector<std::string> faceTokens;
-            std::string faceStr;
-            
-            // Read the entire face line
-            std::string line;
-            std::getline(*in, line);
-            std::istringstream lineStream(line);
-            
-            while (lineStream >> faceStr) {
-                faceTokens.push_back(faceStr);
-            }
+        } else if (prefix == "f") {
+            std::vector<std::string> tokens;
+            std::string token;
+            while (ss >> token) tokens.push_back(token);
 
-            if (faceTokens.size() < 3) continue;
-
-            // Triangle fan approach: v0-v1-v2, v0-v2-v3, ...
-            for (size_t i = 1; i + 1 < faceTokens.size(); ++i) {
-                std::array<std::string, 3> triStrs = {faceTokens[0], faceTokens[i], faceTokens[i + 1]};
-                for (const auto& token : triStrs) {
-                    int posi = -1, texi = -1, nori = -1;
-                    size_t firstSlash = token.find('/');
-                    size_t secondSlash = token.find('/', firstSlash + 1);
-
-                    try {
-                        posi = std::stoi(token.substr(0, firstSlash)) - 1;
-                    } catch (...) {
-                        posi = -1;
-                    }
-
-                    if (secondSlash != std::string::npos) {
-                        if (secondSlash > firstSlash + 1) {
-                            try {
-                                texi = std::stoi(token.substr(firstSlash + 1, secondSlash - firstSlash - 1)) - 1;
-                            } catch (...) {
-                                texi = -1;
-                            }
-                        }
-                        if (secondSlash + 1 < token.size()) {
-                            try {
-                                nori = std::stoi(token.substr(secondSlash + 1)) - 1;
-                            } catch (...) {
-                                nori = -1;
-                            }
-                        }
-                    }
+            for (size_t i = 1; i + 1 < tokens.size(); ++i) {
+                std::array<std::string, 3> tri = {tokens[0], tokens[i], tokens[i + 1]};
+                for (auto &t : tri) {
+                    int pi, ti, ni;
+                    parseFaceToken(t, pi, ti, ni);
 
                     Vertex v;
-                    v.pos = (posi >= 0 && static_cast<size_t>(posi) < positions.size()) ? positions[posi] : glm::vec3(0.0f);
-                    v.texCoord = (texi >= 0 && static_cast<size_t>(texi) < texcoords.size()) ? texcoords[texi] : glm::vec2(0.0f);
-                    v.norm = (nori >= 0 && static_cast<size_t>(nori) < normals.size()) ? normals[nori] : glm::vec3(0.0f);
+                    v.pos = (pi >= 0 && pi < (int)positions.size()) ? positions[pi] : glm::vec3(0.0f);
+                    v.texCoord = (ti >= 0 && ti < (int)texcoords.size()) ? texcoords[ti] : glm::vec2(0.0f);
+                    v.norm = (ni >= 0 && ni < (int)normals.size()) ? normals[ni] : glm::vec3(0.0f);
 
-                    // Use std::find with the overloaded == operator
-                    auto it = std::find(currentVertices.begin(), currentVertices.end(), v);
-                    if (it != currentVertices.end()) {
-                        currentIndices.push_back(static_cast<uint32_t>(std::distance(currentVertices.begin(), it)));
-                    } else {
-                        currentVertices.push_back(v);
-                        currentIndices.push_back(static_cast<uint32_t>(currentVertices.size() - 1));
+                    auto it = std::find(vertices.begin(), vertices.end(), v);
+                    if (it != vertices.end())
+                        indices.push_back((uint32_t)std::distance(vertices.begin(), it));
+                    else {
+                        vertices.push_back(v);
+                        indices.push_back((uint32_t)(vertices.size() - 1));
                     }
                 }
             }
-        } else {
-            std::getline(*in, str); // skip the rest of the line
         }
     }
 
-    // Save the last mesh
-    if (!currentVertices.empty() || !currentIndices.empty()) {
-        meshes[currentMeshName] = {currentVertices, currentIndices};
-    }
+    auto model = std::make_shared<Model>();
+    auto mesh = std::make_shared<Mesh>();
 
-    // Create model
-    std::shared_ptr<Model> model = std::make_shared<Model>();
+    unsigned int VBO, EBO;
+    glGenVertexArrays(1, &mesh->VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
 
-    // Create a mesh for each object/group
-    for (const auto& meshData : meshes) {
-        const auto& vertices = meshData.second.first;
-        const auto& indices = meshData.second.second;
+    glBindVertexArray(mesh->VAO);
 
-        if (vertices.empty() || indices.empty()) {
-            continue;
-        }
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
-        std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
-        unsigned int VBO = 0, EBO = 0;
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * indices.size(), indices.data(), GL_STATIC_DRAW);
+    mesh->indexCount = indices.size();
 
-        glGenVertexArrays(1, &mesh->VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
+    // Attribute locations: pos=0, normal=1, texCoord=2
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
+    glEnableVertexAttribArray(0);
 
-        glBindVertexArray(mesh->VAO);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, norm));
+    glEnableVertexAttribArray(1);
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
+    glEnableVertexAttribArray(2);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        mesh->indexCount = indices.size();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * indices.size(), indices.data(), GL_STATIC_DRAW);
+    glBindVertexArray(0);
 
-        // Set vertex attributes
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, norm));
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
 
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-
-        glBindVertexArray(0);
-
-        // Clean up buffers
-        glDeleteBuffers(1, &VBO);
-        glDeleteBuffers(1, &EBO);
-
-        // Add mesh to model using both methods
-        model->meshes.push_back(mesh);
-        model->namedMeshes[meshData.first] = mesh;
-        
-        std::cout << "Loaded mesh: " << meshData.first 
-                  << " (vertices: " << vertices.size() 
-                  << ", indices: " << indices.size() << ")" << std::endl;
-    }
-
-    if (model->meshes.empty()) {
-        std::cerr << "Warning: No meshes found in OBJ file" << std::endl;
-    }
-
+    model->meshes.push_back(mesh);
     return model;
 }
 }
