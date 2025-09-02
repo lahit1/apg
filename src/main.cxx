@@ -121,9 +121,12 @@ int main(void) {
 		program->link();
 	}
 	c_cam = new Camera();
-	c_cam->dist.z = 40;
-	c_cam->dist.y = 10;
+	c_cam->dist.z = 200;
+	c_cam->dist.y = 25;
 	c_cam->updateView();
+
+	c_cam->farPlane = 300;
+	c_cam->updateProjection();
 	c_cam->updateVP();
 
 	std::ifstream* is = Files::openi("res/model.obj");
@@ -151,8 +154,8 @@ int main(void) {
 		RENDERER::USE(program);
 
 
-		c_cam->dist.z = 40 * glm::cos(valuee += 0.01f);
-		c_cam->dist.x = 40 * glm::sin(valuee);
+		c_cam->dist.z = 200 * glm::cos(valuee += 0.01f);
+		c_cam->dist.x = 200 * glm::sin(valuee);
 		c_cam->updateView();
 		c_cam->updateVP();
 
