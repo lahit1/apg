@@ -17,11 +17,10 @@ namespace Programs {
                 *materialNormalTLoc = "materialNormalT";
 
         const char *viewPosULoc = "viewPos";
+}
 
-Program* create() {
+Program* Program::create() {
 	Program* ret = new Program();
 	ret->ptr = glCreateProgram();
 	return ret;
-}
-
 }

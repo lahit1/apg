@@ -23,7 +23,6 @@ namespace Programs {
 
 	extern const char *viewPosULoc;
 
-	Program* create();
 }
 
 struct Program {
@@ -63,4 +62,7 @@ struct Program {
 
 		viewPosULoc_ptr = glGetUniformLocation(ptr, Programs::viewPosULoc);
 	}
+
+	static Program* create();
+
 };

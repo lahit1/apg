@@ -112,7 +112,7 @@ int main(void) {
         	return -1;
 	}
 
-	Program* program = Programs::create();
+	Program* program = Program::create();
 	{
 		std::shared_ptr<Shader> vertex = Shaders::create(&vertexShaderSource, GL_VERTEX_SHADER)->compile();
 		std::shared_ptr<Shader> fragment = Shaders::create(&fragmentShaderSource, GL_FRAGMENT_SHADER)->compile();
