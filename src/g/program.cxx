@@ -7,8 +7,8 @@ namespace Programs {
 		*viewPosULoc = "viewPos";
 }
 
-Program* Program::create() {
-	Program* ret = new Program();
+std::shared_ptr<Program> Program::mk() {
+	std::shared_ptr<Program> ret = std::make_shared<Program>();
 	ret->ptr = glCreateProgram();
 	return ret;
 }

@@ -8,7 +8,7 @@
 namespace RENDERER {
 
 void BEGIN(Camera* c);
-void USE(Program* p);
+void USE(std::shared_ptr<Program> p);
 void DRAW(std::shared_ptr<Model> m);
 void END(void);
 }

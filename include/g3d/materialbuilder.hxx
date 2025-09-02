@@ -31,7 +31,7 @@ public:
 		return this;
 	}
 
-	inline std::shared_ptr<Material> build(Program* p) {
+	inline std::shared_ptr<Material> build(std::shared_ptr<Program> p) {
 		std::shared_ptr<Material> mat = std::make_shared<Material>();
 		for(auto u: loads_uf) {
 			std::string u_name;

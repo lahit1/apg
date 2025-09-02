@@ -13,8 +13,10 @@ namespace Programs {
 
 }
 
-struct Program {
+class Program {
+	Program(); // hide
 
+	public:
 	GLuint vpULoc_ptr;
 	GLuint modelULoc_ptr;
 	GLuint normalULoc_ptr;
@@ -33,6 +35,6 @@ struct Program {
 		viewPosULoc_ptr = glGetUniformLocation(ptr, Programs::viewPosULoc);
 	}
 
-	static Program* create();
+	static std::shared_ptr<Program> mk();
 
 };

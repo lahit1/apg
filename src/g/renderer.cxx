@@ -8,13 +8,13 @@
 namespace RENDERER {
 
 Camera* c_cam;
-Program* c_p;
+std::shared_ptr<Program> c_p;
 
 void BEGIN(Camera* c) {
 	c_cam = c;
 };
 
-void USE(Program* p) {
+void USE(std::shared_ptr<Program> p) {
 	glUseProgram(p->ptr);
 	c_p = p;
 }
