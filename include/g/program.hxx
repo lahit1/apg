@@ -6,7 +6,7 @@ struct Program;
 
 namespace Programs {
 
-	extern const char *vpULoc,
+	extern char *vpULoc,
 		*modelULoc,
 		*normalULoc,
 		*viewPosULoc;

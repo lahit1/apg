@@ -1,7 +1,7 @@
 #include<g/program.hxx>
 
 namespace Programs {
-	const char *vpULoc = "vpU",
+	char *vpULoc = "vpU",
                 *modelULoc = "modelU",
                 *normalULoc = "normalU",
 		*viewPosULoc = "viewPos";
