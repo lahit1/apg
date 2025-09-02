@@ -3,20 +3,8 @@
 namespace Programs {
 	const char *vpULoc = "vpU",
                 *modelULoc = "modelU",
-                *normalULoc = "normalU";
-
-        const char 
-                *materialAmbientCLoc = "materialAmbientC",
-                *materialDiffuseCLoc = "materialDiffuseC",
-                *materialSpecularCLoc = "materialSpecularC",
-                *materialShininessLoc = "materialShininess";
-
-	const char
-                *materialDiffuseTLoc = "materialDiffuseT",
-                *materialSpecularTLoc = "materialSpecularT",
-                *materialNormalTLoc = "materialNormalT";
-
-        const char *viewPosULoc = "viewPos";
+                *normalULoc = "normalU",
+		*viewPosULoc = "viewPos";
 }
 
 Program* Program::create() {
