@@ -1,7 +1,7 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
-#include<g/shader.hxx>
+#include<ape/g/shader.hxx>
 
 namespace Shaders {
 
