@@ -1,7 +1,7 @@
 #pragma once
 
-#include <g3d/mesh.hxx>
-#include <g3d/material.hxx>
+#include <ape/g3d/mesh.hxx>
+#include <ape/g3d/material.hxx>
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <memory>

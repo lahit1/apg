@@ -1,6 +1,6 @@
 #pragma once
 
-#include<g/shader.hxx>
+#include<ape/g/shader.hxx>
 
 struct Program;
 
@@ -14,7 +14,6 @@ namespace Programs {
 }
 
 class Program {
-	Program(); // hide
 
 	public:
 	GLuint vpULoc_ptr;

@@ -1,3 +1,3 @@
-#include<g3d/renderable.hxx>
+#include<ape/g3d/renderable.hxx>
 
 Renderable::~Renderable() {}

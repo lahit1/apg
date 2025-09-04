@@ -5,14 +5,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-#include <g/shader.hxx>
-#include <g/program.hxx>
-#include <g3d/mesh.hxx>
-#include <g/renderer.hxx>
-#include <g3d/materialbuilder.hxx>
+#include <ape/g/shader.hxx>
+#include <ape/g/program.hxx>
+#include <ape/g3d/mesh.hxx>
+#include <ape/g/renderer.hxx>
+#include <ape/g3d/materialbuilder.hxx>
 
-#include <g/texturemanager.hxx>
-#include <utils/files.hxx>
+#include <ape/g/texturemanager.hxx>
+#include <ape/utils/files.hxx>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>

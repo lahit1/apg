@@ -1,4 +1,4 @@
-#include<g/camera.hxx>
+#include<ape/g/camera.hxx>
 #include <glm/gtc/matrix_transform.hpp>
 
 Camera::Camera() {

@@ -1,5 +1,5 @@
-#include<g/texturemanager.hxx>
-#include<utils/files.hxx>
+#include<ape/g/texturemanager.hxx>
+#include<ape/utils/files.hxx>
 
 namespace TextureManager {
         std::shared_ptr<Texture> load(const std::string& path) {

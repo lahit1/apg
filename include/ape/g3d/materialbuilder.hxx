@@ -1,5 +1,5 @@
-#include <g3d/material.hxx>
-#include <g/program.hxx>
+#include <ape/g3d/material.hxx>
+#include <ape/g/program.hxx>
 
 class MaterialBuilder {
 

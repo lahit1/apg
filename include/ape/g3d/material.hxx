@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <g/texture.hxx>
+#include <ape/g/texture.hxx>
 #include <unordered_map>
 
 struct uniformfv {

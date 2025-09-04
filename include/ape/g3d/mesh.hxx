@@ -1,7 +1,7 @@
 #pragma once
 
 #include<memory>
-#include<g3d/renderable.hxx>
+#include<ape/g3d/renderable.hxx>
 
 struct Mesh : public Renderable {
 	unsigned int VAO=0; // Buffer array (Vertices data)

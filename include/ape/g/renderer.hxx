@@ -1,9 +1,9 @@
 #pragma once
 
-#include<g/program.hxx>
-#include<g/camera.hxx>
-#include<g3d/mesh.hxx>
-#include<g3d/model.hxx>
+#include<ape/g/program.hxx>
+#include<ape/g/camera.hxx>
+#include<ape/g3d/mesh.hxx>
+#include<ape/g3d/model.hxx>
 
 namespace RENDERER {
 

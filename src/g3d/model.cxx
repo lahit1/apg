@@ -1,5 +1,5 @@
-#include <g3d/model.hxx>
-#include <g3d/vertex.hxx>
+#include <ape/g3d/model.hxx>
+#include <ape/g3d/vertex.hxx>
 
 #include <unistd.h>
 #include <algorithm>

@@ -8,9 +8,9 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
-#include<g3d/renderable.hxx>
-#include<g3d/mesh.hxx>
-#include<g3d/vertex.hxx>
+#include<ape/g3d/renderable.hxx>
+#include<ape/g3d/mesh.hxx>
+#include<ape/g3d/vertex.hxx>
 
 void Mesh::render() {
 	glBindVertexArray(VAO);
