@@ -17,65 +17,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 
-const char *vertexShaderSource = R"(
-	#version 330 core
-
-	layout(location = 0) in vec3 aPos;         // 3D position
-	layout(location = 1) in vec3 aNorm;         // Surface normal
-        layout(location = 2) in vec2 aTexCoord;       // Texture Coordinate
-//	layout(location = 3) in vec4 aColor;       // RGBA color
-
-	uniform mat4 vpU;
-	uniform mat4 modelU;
-	uniform mat4 normalU;
-
-	out vec3 FragPos;
-	out vec3 Normal;
-	out vec2 TexCoord;
-
-	void main()
-	{
-		vec4 worldPos = modelU * vec4(aPos, 1.0);
-
-		FragPos = vec3(worldPos);  // world-space position
-		Normal = mat3(normalU) * aNorm;      // correct normal transformation
-		TexCoord = aTexCoord;
-
-		gl_Position = vpU * worldPos; // convert to 4D vec
-	}
-
-)";
-
-
-const char *fragmentShaderSource = R"(
-#version 330 core
-
-
-uniform vec3 materialAmbientC;
-uniform vec3 materialDiffuseC;
-uniform vec3 materialSpecularC;
-uniform float materialShininess;
-
-uniform sampler2D materialDiffuseT;
-uniform sampler2D materialSpecularT;
-uniform sampler2D materialNormalT;
-
-
-uniform vec3 viewPos;      // Camera position
-
-in vec3 FragPos;
-in vec3 Normal;
-in vec2 TexCoord;
-
-out vec4 FragColor;      // Output color
-
-void main()
-{
-	FragColor = texture(materialDiffuseT, TexCoord);
-//	FragColor = vec4(TexCoord, 0.0, 1.0);
-}
-
-)";
 
 
 Camera* c_cam;
@@ -112,10 +53,38 @@ int main(void) {
         	return -1;
 	}
 
-	std::shared_ptr<Program> program = Program::mk();
+	std::shared_ptr<ShaderProgram> program = ShaderProgram::mk();
 	{
-		std::shared_ptr<Shader> vertex = Shaders::create(&vertexShaderSource, GL_VERTEX_SHADER)->compile();
-		std::shared_ptr<Shader> fragment = Shaders::create(&fragmentShaderSource, GL_FRAGMENT_SHADER)->compile();
+		std::ifstream *t = Files::openi("res/vertex.glsl");
+		std::string str;
+
+		t->seekg(0, std::ios::end);   
+		str.reserve(t->tellg());
+		t->seekg(0, std::ios::beg);
+
+		str.assign((std::istreambuf_iterator<char>(*t)),
+			std::istreambuf_iterator<char>());
+
+		const char * shader_data = str.c_str();
+		std::shared_ptr<Shader> vertex = Shaders::create(&shader_data, GL_VERTEX_SHADER)->compile();
+		t->close();
+		delete t;
+
+		t = Files::openi("res/fragment.glsl");
+
+		t->seekg(0, std::ios::end);   
+		str.reserve(t->tellg());
+		t->seekg(0, std::ios::beg);
+
+		str.assign((std::istreambuf_iterator<char>(*t)),
+			std::istreambuf_iterator<char>());
+
+		
+		shader_data = str.c_str();
+		std::shared_ptr<Shader> fragment = Shaders::create(&shader_data, GL_FRAGMENT_SHADER)->compile();
+		t->close();
+		delete t;
+
 		program->attach(vertex);
 		program->attach(fragment);
 		program->link();
