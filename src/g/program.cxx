@@ -7,8 +7,13 @@ namespace Programs {
 		*viewPosULoc = "viewPos";
 }
 
-std::shared_ptr<Program> Program::mk() {
-	std::shared_ptr<Program> ret = std::make_shared<Program>();
+std::shared_ptr<ShaderProgram> ShaderProgram::mk() {
+	std::shared_ptr<ShaderProgram> ret = std::make_shared<ShaderProgram>();
 	ret->ptr = glCreateProgram();
+	return ret;
+}
+
+std::shared_ptr<ProgramGroup> ProgramGroup::mk() {
+	std::shared_ptr<ProgramGroup> ret = std::make_shared<ProgramGroup>();
 	return ret;
 }

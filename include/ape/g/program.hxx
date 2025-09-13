@@ -1,8 +1,7 @@
 #pragma once
 
 #include<ape/g/shader.hxx>
-
-struct Program;
+#include<vector>
 
 namespace Programs {
 
@@ -13,15 +12,18 @@ namespace Programs {
 
 }
 
-class Program {
+struct Program {
 
-	public:
 	GLuint vpULoc_ptr;
 	GLuint modelULoc_ptr;
 	GLuint normalULoc_ptr;
 	GLuint viewPosULoc_ptr;
 
-	unsigned int ptr;
+	GLuint ptr;
+};
+
+struct ShaderProgram : public Program {
+
 	inline void attach(std::shared_ptr<Shader> s) {
         	glAttachShader(ptr, s->ptr);
 	}
@@ -34,6 +36,21 @@ class Program {
 		viewPosULoc_ptr = glGetUniformLocation(ptr, Programs::viewPosULoc);
 	}
 
-	static std::shared_ptr<Program> mk();
+	static std::shared_ptr<ShaderProgram> mk();
 
+};
+
+class ProgramGroup : public Program {
+	std::vector<GLuint> ptr_ls;
+
+	public:
+	inline void with(const size_t i) {
+		ptr = ptr_ls[i];
+	};
+
+	inline void add(Program& p) {
+		ptr_ls.push_back(p.ptr);
+	};
+
+	static std::shared_ptr<ProgramGroup> mk();
 };
