@@ -13,7 +13,15 @@ std::shared_ptr<ShaderProgram> ShaderProgram::mk() {
 	return ret;
 }
 
+void ShaderProgram::use() {
+	glUseProgram(ptr);
+}
+
 std::shared_ptr<ProgramGroup> ProgramGroup::mk() {
 	std::shared_ptr<ProgramGroup> ret = std::make_shared<ProgramGroup>();
 	return ret;
+}
+
+void ProgramGroup::use() {
+	c_pr->use();
 }

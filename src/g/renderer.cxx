@@ -15,16 +15,16 @@ void BEGIN(Camera* c) {
 };
 
 void USE(std::shared_ptr<Program> p) {
-	glUseProgram(p->ptr);
+	p->use();
 	c_p = p;
 }
 
 void DRAW(std::shared_ptr<Model> mod) {
-        glUniformMatrix4fv(c_p->vpULoc_ptr, 1, GL_FALSE, glm::value_ptr(c_cam->vp));
-        glUniformMatrix4fv(c_p->modelULoc_ptr, 1, GL_FALSE, glm::value_ptr(mod->matrix));
-        glUniformMatrix4fv(c_p->normalULoc_ptr, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(mod->matrix))));
+        glUniformMatrix4fv(*c_p->vpULoc_ptr, 1, GL_FALSE, glm::value_ptr(c_cam->vp));
+        glUniformMatrix4fv(*c_p->modelULoc_ptr, 1, GL_FALSE, glm::value_ptr(mod->matrix));
+        glUniformMatrix4fv(*c_p->normalULoc_ptr, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(mod->matrix))));
 
-	glUniform3fv(c_p->viewPosULoc_ptr, 1, glm::value_ptr(c_cam->pos));
+	glUniform3fv(*c_p->viewPosULoc_ptr, 1, glm::value_ptr(c_cam->pos));
 
 	mod->render();
 }
