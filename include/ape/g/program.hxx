@@ -14,10 +14,10 @@ namespace Programs {
 
 struct Program {
 
-	GLuint *vpULoc_ptr;
-	GLuint *modelULoc_ptr;
-	GLuint *normalULoc_ptr;
-	GLuint *viewPosULoc_ptr;
+	virtual GLuint vpULoc_ptr() = 0;
+	virtual GLuint modelULoc_ptr() = 0;
+	virtual GLuint normalULoc_ptr() = 0;
+	virtual GLuint viewPosULoc_ptr() = 0;
 
 	GLuint ptr;
 
@@ -26,12 +26,16 @@ struct Program {
 
 struct ShaderProgram : public Program {
 
-	ShaderProgram() {
-		vpULoc_ptr = new GLuint();
-		modelULoc_ptr = new GLuint();
-		normalULoc_ptr = new GLuint();
-		viewPosULoc_ptr = new GLuint();
-	}
+	GLuint _vpULoc_ptr;
+	GLuint _modelULoc_ptr;
+	GLuint _normalULoc_ptr;
+	GLuint _viewPosULoc_ptr;
+
+
+	GLuint vpULoc_ptr() override;
+	GLuint modelULoc_ptr() override;
+	GLuint normalULoc_ptr() override;
+	GLuint viewPosULoc_ptr() override;
 
 	inline void attach(std::shared_ptr<Shader> s) {
         	glAttachShader(ptr, s->ptr);
@@ -39,10 +43,10 @@ struct ShaderProgram : public Program {
 
 	inline void link() {
         	glLinkProgram(ptr);
-		*vpULoc_ptr = glGetUniformLocation(ptr, Programs::vpULoc);
-		*modelULoc_ptr = glGetUniformLocation(ptr, Programs::modelULoc);
-		*normalULoc_ptr = glGetUniformLocation(ptr, Programs::normalULoc);
-		*viewPosULoc_ptr = glGetUniformLocation(ptr, Programs::viewPosULoc);
+		_vpULoc_ptr = glGetUniformLocation(ptr, Programs::vpULoc);
+		_modelULoc_ptr = glGetUniformLocation(ptr, Programs::modelULoc);
+		_normalULoc_ptr = glGetUniformLocation(ptr, Programs::normalULoc);
+		_viewPosULoc_ptr = glGetUniformLocation(ptr, Programs::viewPosULoc);
 	}
 
 	static std::shared_ptr<ShaderProgram> mk();
@@ -54,19 +58,20 @@ class ProgramGroup : public Program {
 	std::vector<std::shared_ptr<Program>> pr_ls;
 	std::shared_ptr<Program> c_pr;
 
+	GLuint vpULoc_ptr() override;
+	GLuint modelULoc_ptr() override;
+	GLuint normalULoc_ptr() override;
+	GLuint viewPosULoc_ptr() override;
+
 	public:
 	inline void with(const size_t i) {
 		c_pr = pr_ls[i];
-		vpULoc_ptr = c_pr->vpULoc_ptr;
-		modelULoc_ptr = c_pr->modelULoc_ptr;
-		normalULoc_ptr = c_pr->normalULoc_ptr;
-		viewPosULoc_ptr = c_pr->viewPosULoc_ptr;
-	};
+	}
 
 	inline void add(std::shared_ptr<Program> p) {
 		pr_ls.push_back(p);
 		if(!c_pr) with(0);
-	};
+	}
 
 	static std::shared_ptr<ProgramGroup> mk();
 
