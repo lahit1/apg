@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ape/g3d/material.hxx>
 #include <ape/g/program.hxx>
 
