@@ -53,5 +53,5 @@ struct Model : Renderable {
 		return false;
 	}
 
-	void render() override;
+	void render(std::shared_ptr<Program> pr) override;
 };

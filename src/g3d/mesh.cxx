@@ -12,7 +12,7 @@
 #include<ape/g3d/mesh.hxx>
 #include<ape/g3d/vertex.hxx>
 
-void Mesh::render() {
+void Mesh::render(std::shared_ptr<Program> pr) {
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }

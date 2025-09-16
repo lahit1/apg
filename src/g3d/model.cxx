@@ -12,7 +12,7 @@
 #include <sstream>
 #include <unordered_map>
 
-void Model::render() {
+void Model::render(std::shared_ptr<Program> pr) {
 	std::shared_ptr<Material> mat = material;
 	for(auto ufor : mat->uniforms_f)
 		if(ufor.first)
@@ -25,8 +25,12 @@ void Model::render() {
 			tex.second->bind(i++);
 		}
 
-	for(std::shared_ptr<Mesh> m: meshes)
-		m->render();
+	for(std::shared_ptr<Mesh> m: meshes) {
+		glm::mat4 mmat = m->matrix * matrix;
+	        glUniformMatrix4fv(pr->modelULoc_ptr(), 1, GL_FALSE, glm::value_ptr(mmat));
+	        glUniformMatrix4fv(pr->normalULoc_ptr(), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(mmat))));
+		m->render(pr);
+	}
 }
 
 namespace Models {
