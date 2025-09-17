@@ -12,7 +12,7 @@ enum {
 };
 
 struct Animation {
-	const float duration;
+	float duration;
 	float current_time;
 
 	char amode = 1;
