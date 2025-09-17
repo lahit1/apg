@@ -28,12 +28,13 @@ void Model::render(std::shared_ptr<Program> pr) {
 
 	float dt = 1./60; // Debug value
 
-	for(Animation ani: animations) {
-		ani.act(dt);
-		for(auto bani: ani.boneanimations) {
+	
+	for(std::shared_ptr<Animation> ani: animations) {
+		ani->act(dt);
+		for(auto bani: ani->boneanimations) {
 			auto meshp = namedMeshes.find(bani.first);
 			if(meshp == namedMeshes.end()) continue;
-			meshp->second->matrix = bani.second.interpolate(ani.current_time);
+			meshp->second->matrix = bani.second.interpolate(ani->current_time);
 		}
 	}
 

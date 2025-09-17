@@ -20,7 +20,7 @@ struct Model : Renderable {
 
 	std::shared_ptr<Material> material;
 
-	std::vector<Animation> animations;
+	std::vector<std::shared_ptr<Animation>> animations;
 
 	glm::mat4 matrix = glm::mat4(1);
 
