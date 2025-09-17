@@ -116,12 +116,13 @@ int main(void) {
 	delete is;
 
 	{
-		Animation ani;
+		std::shared_ptr<Animation> ani = std::make_shared<Animation>();
+		ani->duration = 2;
 
 		BoneAnimation bani;
-		bani.keyframes.push_back({1.f, {0,0,0}, {0,0,0}, {1,1,1}});
-		bani.keyframes.push_back({1.f, {0,0,0}, {0,0,0}, {1,5,1}});
-		ani.boneanimations.insert({"Jet", bani});
+		bani.keyframes.push_back({0.f, {0,0,0}, {0,0,0}, {1,1,1}});
+		bani.keyframes.push_back({2.f, {0,0,0}, {0,0,0}, {1,2,1}});
+		ani->boneanimations.insert({"Jet", bani});
 
 		bmodel->animations.push_back(ani);
 	}
