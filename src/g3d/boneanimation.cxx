@@ -1,5 +1,6 @@
 #include <ape/g3d/boneanimation.hxx>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 constexpr glm::vec3 zaxis{0, 0, 1};
 constexpr glm::vec3 yaxis{0, 1, 0};
@@ -7,7 +8,7 @@ constexpr glm::vec3 xaxis{1, 0, 0};
 
 glm::mat4 BoneAnimation::interpolate(float current_time) {
 	size_t loop_count = keyframes.size() - 1;
-	for(size_t i; i < loop_count; // we'll gonna use a pre defined variable instead of direct call.
+	for(size_t i=0; i < loop_count; // we'll gonna use a pre defined variable instead of direct call.
 					// That should decrase jump table, or i don't know
 					i++) {
 		KeyFrame &fi = keyframes[i], &se = keyframes[i + 1];
