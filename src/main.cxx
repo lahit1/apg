@@ -115,6 +115,18 @@ int main(void) {
 	is->close();
 	delete is;
 
+	{
+		Animation ani;
+
+		BoneAnimation bani;
+		bani.keyframes.push_back({1.f, {0,0,0}, {0,0,0}, {1,1,1}});
+		bani.keyframes.push_back({1.f, {0,0,0}, {0,0,0}, {1,5,1}});
+		ani.boneanimations.insert({"Jet", bani});
+
+		bmodel->animations.push_back(ani);
+	}
+
+
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
 	while(!glfwWindowShouldClose(window)) {
