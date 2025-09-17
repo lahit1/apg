@@ -15,9 +15,9 @@ glm::mat4 BoneAnimation::interpolate(float current_time) {
 		if(fi.time < current_time && se.time > current_time) {
 			float elapsed = (current_time - fi.time) / (se.time - fi.time);
 
-			glm::vec3 pos = (se.pos - fi.pos) * elapsed;
-			glm::vec3 rot = (se.rot - fi.rot) * elapsed;
-			glm::vec3 sca = (se.sca - fi.sca) * elapsed;
+			glm::vec3 pos = fi.pos + (se.pos - fi.pos) * elapsed;
+			glm::vec3 rot = fi.rot + (se.rot - fi.rot) * elapsed;
+			glm::vec3 sca = fi.sca + (se.sca - fi.sca) * elapsed;
 
 			glm::mat4 model_mat(1);
 
