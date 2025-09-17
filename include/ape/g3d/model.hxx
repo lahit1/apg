@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <memory>
+#include <ape/g3d/animation.hxx>
 
 struct Model;
 
@@ -18,6 +19,8 @@ struct Model : Renderable {
 	std::unordered_map<std::string, std::shared_ptr<Mesh>> namedMeshes;
 
 	std::shared_ptr<Material> material;
+
+	std::vector<Animation> animations;
 
 	glm::mat4 matrix = glm::mat4(1);
 

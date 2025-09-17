@@ -25,10 +25,23 @@ void Model::render(std::shared_ptr<Program> pr) {
 			tex.second->bind(i++);
 		}
 
+
+	float dt = 1./60; // Debug value
+
+	for(Animation ani: animations) {
+		ani.act(dt);
+		for(auto bani: ani.boneanimations) {
+			auto meshp = namedMeshes.find(bani.first);
+			if(meshp == namedMeshes.end()) continue;
+			meshp->second->matrix = bani.second.interpolate(ani.current_time);
+		}
+	}
+
 	for(std::shared_ptr<Mesh> m: meshes) {
 		glm::mat4 mmat = m->matrix * matrix;
 	        glUniformMatrix4fv(pr->modelULoc_ptr(), 1, GL_FALSE, glm::value_ptr(mmat));
 	        glUniformMatrix4fv(pr->normalULoc_ptr(), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(mmat))));
+
 		m->render(pr);
 	}
 }
