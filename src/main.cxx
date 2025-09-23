@@ -28,6 +28,17 @@ void framebuffer_size_callback(GLFWwindow* win, int w, int h) {
 	c_cam->updateVP();
 }
 
+std::shared_ptr<ProgramGroup> pr_group;
+	bool with_i;
+
+void keyboard_callback(GLFWwindow *win, int key, int, int act, int) {
+	if(key == GLFW_KEY_SPACE && act == GLFW_PRESS)
+		pr_group->with(1);
+	else if(key == GLFW_KEY_SPACE && act == GLFW_RELEASE)
+		pr_group->with(0);
+}
+
+
 float valuee;
 
 int main(void) {
@@ -44,6 +55,7 @@ int main(void) {
 	}
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetKeyCallback(window, keyboard_callback);
 
 	glfwMakeContextCurrent(window);
 
@@ -53,8 +65,10 @@ int main(void) {
         	return -1;
 	}
 
-	std::shared_ptr<ShaderProgram> program = ShaderProgram::mk();
+	pr_group = ProgramGroup::mk();
 	{
+		std::shared_ptr<ShaderProgram> program = ShaderProgram::mk();
+
 		std::ifstream *t = Files::openi("res/vertex.glsl");
 		std::string str;
 
@@ -85,9 +99,39 @@ int main(void) {
 		t->close();
 		delete t;
 
+
 		program->attach(vertex);
 		program->attach(fragment);
 		program->link();
+
+		pr_group->add(program);
+
+
+
+		t = Files::openi("res/fragment2.glsl");
+
+		t->seekg(0, std::ios::end);   
+		str.reserve(t->tellg());
+		t->seekg(0, std::ios::beg);
+
+		str.assign((std::istreambuf_iterator<char>(*t)),
+			std::istreambuf_iterator<char>());
+
+		
+		shader_data = str.c_str();
+		fragment = Shaders::create(&shader_data, GL_FRAGMENT_SHADER)->compile();
+		t->close();
+		delete t;
+
+
+		program = ShaderProgram::mk();
+
+		program->attach(vertex);
+		program->attach(fragment);
+		program->link();
+
+		pr_group->add(program);
+
 	}
 	c_cam = new Camera();
 	c_cam->dist.z = 200;
@@ -110,7 +154,7 @@ int main(void) {
 		std::shared_ptr<Texture> tex = TextureManager::load("res/texture.png");
 		matb->add("materialDiffuseT", tex);
 
-		bmodel->material = matb->build(program);
+		bmodel->material = matb->build(pr_group);
 	}
 	is->close();
 	delete is;
@@ -133,7 +177,7 @@ int main(void) {
 	while(!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		RENDERER::USE(program);
+		RENDERER::USE(pr_group);
 
 
 		c_cam->dist.z = 200 * glm::cos(valuee += 0.01f);
