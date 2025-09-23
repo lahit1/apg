@@ -103,3 +103,12 @@ print:
 
 # Prevent make from deleting intermediate files
 .SECONDARY:
+
+
+
+.PHONY: install
+install:
+	mkdir -p assimp-build
+	cd assimp-build
+	cmake ../assimp
+	cd ..
